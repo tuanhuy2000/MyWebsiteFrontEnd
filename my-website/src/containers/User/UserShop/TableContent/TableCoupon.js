@@ -661,7 +661,7 @@ const TableCoupon = (props) => {
             <Table striped bordered hover>
               <thead>
                 <tr>
-                  <th>STT</th>
+                  <th>STt</th>
                   <th>Code</th>
                   <th>Quantity</th>
                   <th>Worth</th>
