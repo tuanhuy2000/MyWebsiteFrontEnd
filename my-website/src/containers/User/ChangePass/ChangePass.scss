@@ -1,0 +1,26 @@
+.container-change-pass {
+  height: 85%;
+  max-width: 500px;
+  margin: 50px 50px;
+  .custom-input {
+    input::-ms-reveal {
+      display: none;
+    }
+    position: relative;
+    i {
+      position: absolute;
+      top: 11px;
+      right: 10px;
+      cursor: pointer;
+    }
+  }
+  label {
+    font-size: 20px;
+    font-weight: 600;
+  }
+
+  button {
+    margin-top: 30px;
+    font-size: 20px;
+  }
+}

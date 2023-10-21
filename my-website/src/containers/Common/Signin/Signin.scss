@@ -1,0 +1,93 @@
+.signin-background {
+  height: 100vh;
+  background: linear-gradient(#ee4d2d 0%, #ff7337 100%);
+  .signin-container {
+    height: 670px;
+    position: absolute;
+    //margin: 0 auto;
+    border-radius: 10px;
+    background-color: white;
+    margin: auto;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    .signin-content {
+      padding: 15px;
+      .text-signin {
+        font-weight: 600;
+        font-size: 24px;
+        padding-top: 10px;
+        text-align: center;
+      }
+      .signin-input {
+        margin: 3px 0;
+        .custom-input {
+          input::-ms-reveal {
+            display: none;
+          }
+          position: relative;
+          i {
+            position: absolute;
+            top: 11px;
+            right: 10px;
+            cursor: pointer;
+          }
+        }
+      }
+      .btn-signin {
+        width: 100%;
+        margin: 10px 0;
+        height: 35px;
+        border-radius: 20px;
+        outline: none;
+        border: none;
+        background: linear-gradient(#ee4d2d 0%, #ff7337 100%);
+        font-size: 16px;
+        color: white;
+      }
+      .social-signin {
+        display: flex;
+        justify-content: center;
+        text-align: center;
+        margin-top: 10px;
+      }
+      .google {
+        background: rgb(190, 61, 61);
+        border-radius: 50%;
+        height: 50px;
+        width: 50px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-size: 30px;
+        margin-right: 10px;
+      }
+      .facebook {
+        background: rgb(45, 45, 214);
+        border-radius: 50%;
+        height: 50px;
+        width: 50px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-size: 30px;
+      }
+      .back {
+        position: relative;
+        .btn-back {
+          width: 20%;
+          height: 35px;
+          border-radius: 20px;
+          outline: none;
+          border: none;
+          background: linear-gradient(#ee4d2d 0%, #ff7337 100%);
+          font-size: 16px;
+          color: white;
+        }
+      }
+    }
+  }
+}

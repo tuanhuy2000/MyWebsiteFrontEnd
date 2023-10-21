@@ -1,0 +1,36 @@
+.container-user {
+  height: 85vh;
+  display: flex;
+
+  .right-nav {
+    width: 25vw;
+    ul {
+      list-style-type: none;
+      margin: 0;
+      padding: 0;
+      width: 25vw;
+      background-color: #f1f1f1;
+      overflow: auto;
+
+      li {
+        display: block;
+        color: #000;
+        padding: 16px 16px;
+        text-decoration: none;
+        border-radius: 3px;
+      }
+      li:hover {
+        background-color: #f5c7b3;
+        color: white;
+      }
+      .active {
+        background-color: #ff7337;
+        color: white;
+      }
+    }
+  }
+
+  .content {
+    width: 75vw;
+  }
+}

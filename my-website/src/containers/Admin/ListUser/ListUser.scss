@@ -1,0 +1,40 @@
+.list-user-container {
+  height: 85vh;
+  .title {
+    font-size: 30px;
+    text-align: center;
+    padding-top: 20px;
+    font-weight: 500;
+  }
+  .list-user-content {
+    margin: 0 20px;
+    .input-search {
+      position: relative;
+      i {
+        position: absolute;
+        top: 11px;
+        right: 10px;
+        cursor: pointer;
+      }
+    }
+    .custom-table {
+      width: inherit;
+      max-height: 50vh;
+      overflow-x: auto;
+      overflow-y: auto;
+      margin-bottom: 20px;
+      .sort-header {
+        display: flex;
+        justify-content: space-between;
+
+        i {
+          padding: 0 2px;
+          cursor: pointer;
+        }
+      }
+    }
+  }
+  .pagination {
+    justify-content: center;
+  }
+}

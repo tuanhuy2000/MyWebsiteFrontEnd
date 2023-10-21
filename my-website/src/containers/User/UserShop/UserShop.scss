@@ -1,0 +1,67 @@
+.container-user-shop {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  .header-shop-avt {
+    display: flex;
+    text-align: center;
+    width: 100%;
+    justify-content: space-between;
+    align-items: center;
+    img {
+      width: 15vw;
+      height: 15vw;
+      border-radius: 50%;
+      margin-top: 10px;
+    }
+    label {
+      font-size: 3vw;
+      font-weight: 600;
+    }
+    button {
+      margin: 0 1vw;
+      font-size: 1vw;
+      height: 6vw;
+      width: 12vw;
+      font-weight: 700;
+    }
+  }
+
+  .header-shop {
+    display: flex;
+    width: 100%;
+    font-weight: 700;
+    font-size: 2vw;
+    cursor: pointer;
+
+    .total-count-product {
+      background-color: rgba(255, 128, 0, 0.1);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: rgb(255, 128, 0);
+      height: 7vh;
+    }
+    .total-count-coupon {
+      background-color: rgb(255, 0, 0, 0.1);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: rgb(255, 0, 0);
+    }
+    .total-count-order {
+      background-color: rgb(255, 0, 255, 0.1);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: rgb(255, 0, 255);
+    }
+  }
+}
+
+.container-user-shop-alert {
+  height: 85%;
+  margin: 20px;
+}
