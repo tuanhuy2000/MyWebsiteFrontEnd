@@ -23,7 +23,7 @@ const TableProduct = (props) => {
   const [direction, setDirection] = useState("asc");
   const [keyword, setKeyword] = useState("");
   const [curentPage, setCurrentPage] = useState(1);
-  const [perPage] = useState(1);
+  const [perPage] = useState(5);
   const account = useSelector((state) => state.user.account);
   const [dataModify, setDataModify] = useState({});
   const [img1, setImg1] = useState();
@@ -284,6 +284,7 @@ const TableProduct = (props) => {
                     </div>
                   </th>
                   <th>Quantity</th>
+                  <th>Information</th>
                   <th>Address</th>
                   <th>Type</th>
                   <th>Actions</th>
@@ -299,11 +300,12 @@ const TableProduct = (props) => {
                         <td>{item.name}</td>
                         <td>{item.price}</td>
                         <td>{item.quantity}</td>
+                        <td>{item.information}</td>
                         <td>{item.address}</td>
                         <td>{item.type}</td>
                         <td>
                           <button
-                            className="btn btn-warning mx-3"
+                            className="btn btn-warning"
                             onClick={() => handleClickChangeBtn(item)}
                           >
                             Change

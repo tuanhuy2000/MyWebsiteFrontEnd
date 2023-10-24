@@ -22,6 +22,7 @@ const ModalAddProduct = (props) => {
   const [name, setName] = useState("");
   const [price, setPrice] = useState("");
   const [quantity, setQuantity] = useState("");
+  const [information, setInformation] = useState("");
   const [listCity, setListCity] = useState([]);
   const [listType, setListType] = useState([]);
   const [city, setCity] = useState("Thành phố Hà Nội");
@@ -117,6 +118,7 @@ const ModalAddProduct = (props) => {
         name,
         price,
         quantity,
+        information,
         city,
         type,
         img,
@@ -144,6 +146,7 @@ const ModalAddProduct = (props) => {
                 name,
                 price,
                 quantity,
+                information,
                 city,
                 type,
                 img,
@@ -201,6 +204,7 @@ const ModalAddProduct = (props) => {
         name,
         price,
         quantity,
+        information,
         city,
         type,
         img
@@ -221,12 +225,13 @@ const ModalAddProduct = (props) => {
               const config2 = {
                 headers: { Authorization: `Bearer ${token}` },
               };
-              CreateProduct(
+              ChangeProduct(
                 config2,
                 props.data.id,
                 name,
                 price,
                 quantity,
+                information,
                 city,
                 type,
                 img
@@ -266,6 +271,7 @@ const ModalAddProduct = (props) => {
       setName(props.data.name);
       setPrice(props.data.price);
       setQuantity(props.data.quantity);
+      setInformation(props.data.information);
       setCity(props.data.address);
       setType(props.data.type);
       setImg1(props.img1);
@@ -275,6 +281,7 @@ const ModalAddProduct = (props) => {
       setName("");
       setPrice("");
       setQuantity("");
+      setInformation("");
       setImg1("");
       setImg2("");
       setImg3("");
@@ -316,6 +323,15 @@ const ModalAddProduct = (props) => {
                   value={quantity}
                   onChange={(event) => setQuantity(event.target.value)}
                 />
+              </div>
+              <div className="mb-3">
+                <label className="form-label">Information</label>
+                <textarea
+                  className="form-control"
+                  rows="5"
+                  value={information}
+                  onChange={(event) => setInformation(event.target.value)}
+                ></textarea>
               </div>
               <div className="mb-3">
                 <label className="form-label">City</label>

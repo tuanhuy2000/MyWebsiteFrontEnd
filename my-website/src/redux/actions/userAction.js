@@ -44,7 +44,7 @@ export const handleLoginRedux = (username, password) => {
           dispatch({ type: LOGIN_ERROR });
         }
       } else {
-        toast.error(res.data.message);
+        toast.warning(res.data.message);
         dispatch({ type: LOGIN_ERROR });
       }
     } else {

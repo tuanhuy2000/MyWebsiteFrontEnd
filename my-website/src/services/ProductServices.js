@@ -10,6 +10,7 @@ const CreateProduct = (
   name,
   price,
   quantity,
+  information,
   address,
   type,
   img,
@@ -17,7 +18,7 @@ const CreateProduct = (
 ) => {
   return axios.post(
     `/api/Product/CreateProduct?id=${uid}`,
-    { id, name, price, quantity, address, type, img },
+    { id, name, price, quantity, information, address, type, img },
     config
   );
 };
@@ -48,13 +49,14 @@ const ChangeProduct = (
   name,
   price,
   quantity,
+  information,
   address,
   type,
   img
 ) => {
   return axios.put(
     `/api/Product/ChangeProduct`,
-    { id, name, price, quantity, address, type, img },
+    { id, name, price, quantity, information, address, type, img },
     config
   );
 };
