@@ -1,25 +1,92 @@
-.blogs-container {
+.filter {
+  display: flex;
+  text-align: center;
+  align-items: center;
+  background-color: white;
+  justify-content: space-around;
+  .search {
+    margin: 10px 0;
+    position: relative;
+    input {
+      background-color: rgb(245, 245, 245);
+      border: none;
+    }
+    i {
+      color: #ee4d2d;
+      position: absolute;
+      top: 11px;
+      right: 10px;
+    }
+  }
+  select {
+    margin: 10px 0;
+    background-color: rgb(245, 245, 245);
+    border: none;
+  }
+  i {
+    cursor: pointer;
+  }
+}
+
+.home-container {
   display: flex;
   flex-direction: row;
   gap: 10px;
   flex-wrap: wrap;
+  background-color: rgb(245, 245, 245);
+  padding: 10px;
 
-  .single-blog {
-    border: 1px solid grey;
-    border-radius: 3px;
-    padding: 10px;
-    margin: 0 10px;
+  .single-product {
+    background-color: white;
+    border-radius: 5px;
     width: 250px;
-    height: 250px;
-    text-align: center !important;
+    height: 400px;
 
-    .title {
-      font-size: 20px;
-      font-weight: 600;
+    img {
+      border-radius: 5px;
+      width: 250px;
+      height: 250px;
     }
 
     .content {
-      padding: 10px 0;
+      padding: 10px;
+      i {
+        padding-right: 5px;
+      }
+
+      .title {
+        font-size: 20px;
+        font-weight: 500;
+        span {
+          overflow: hidden;
+          text-overflow: ellipsis;
+          display: -webkit-box;
+          -webkit-line-clamp: 2;
+          -webkit-box-orient: vertical;
+          height: 60px;
+        }
+      }
+
+      .price {
+        font-size: 30px;
+        color: #ff7337;
+        font-weight: 500;
+      }
+
+      .address {
+        font-size: 14px;
+        color: rgb(100, 100, 100);
+      }
     }
   }
+}
+
+.pagination {
+  justify-content: center;
+  background-color: rgb(245, 245, 245);
+  padding: 10px 0;
+  --bs-pagination-color: #ee4d2d !important;
+  --bs-pagination-active-bg: #ff7337 !important;
+  --bs-pagination-active-border-color: none !important;
+  --bs-pagination-hover-color: rgb(221, 159, 35) !important;
 }

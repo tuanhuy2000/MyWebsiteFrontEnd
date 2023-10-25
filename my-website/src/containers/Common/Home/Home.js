@@ -35,15 +35,9 @@ const Home = () => {
         <div className="Home-logo">
           <span onClick={() => history.push("/")}>
             <i className="fa-solid fa-bag-shopping"></i>
-            <span className="d-none d-sm-inline">Shopee</span>
+            <span>Shopee</span>
           </span>
         </div>
-
-        <div className="search">
-          <input type="text" className="form-control" />
-          <i className="fas fa-search"></i>
-        </div>
-
         <div>
           <div className="group-icon">
             <span onClick={() => history.push(`/cart`)}>

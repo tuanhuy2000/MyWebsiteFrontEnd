@@ -18,22 +18,6 @@
     }
   }
 
-  input {
-    width: 40vw;
-  }
-
-  .search {
-    margin: 0 10px;
-    position: relative;
-    i {
-      color: #ee4d2d;
-      position: absolute;
-      top: 11px;
-      right: 10px;
-      cursor: pointer;
-    }
-  }
-
   .group-icon {
     display: flex;
     justify-content: space-between;

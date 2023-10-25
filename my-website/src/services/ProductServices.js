@@ -77,6 +77,18 @@ const CountProductOfUser = (id) => {
   return axios.get(`/api/Product/CountProductOfUser?id=${id}`);
 };
 
+const GetPageProduct = (pageNum, perPage) => {
+  return axios.get(
+    `/api/Product/pageProduct?pageNum=${pageNum}&perPage=${perPage}`
+  );
+};
+
+const SearchProduct = (pageNum, perPage, keyWord, address, type, direction) => {
+  return axios.get(
+    `/api/Product/searchProduct?pageNum=${pageNum}&perPage=${perPage}&keyWord=${keyWord}&address=${address}&type=${type}&direction=${direction}`
+  );
+};
+
 export {
   GetAllTypeProduct,
   CreateProduct,
@@ -88,4 +100,6 @@ export {
   SearchProductOfUserByAddress,
   SearchProductOfUserByType,
   CountProductOfUser,
+  GetPageProduct,
+  SearchProduct,
 };
