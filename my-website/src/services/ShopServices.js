@@ -24,4 +24,14 @@ const DeleteShopByIdUser = (config, id) => {
   return axios.delete(`/api/Shop/DeleteShop?id=${id}`, config);
 };
 
-export { GetShopByUserId, CreateShop, ChangeShop, DeleteShopByIdUser };
+const GetShopByProductId = (id) => {
+  return axios.get(`/api/Shop/GetShopByProduct?id=${id}`);
+};
+
+export {
+  GetShopByUserId,
+  CreateShop,
+  ChangeShop,
+  DeleteShopByIdUser,
+  GetShopByProductId,
+};

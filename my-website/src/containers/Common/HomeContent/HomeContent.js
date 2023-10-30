@@ -9,8 +9,10 @@ import {
 import { useEffect } from "react";
 import ReactPaginate from "react-paginate";
 import { GetLocation } from "../../../services/Common";
+import { useHistory } from "react-router-dom";
 
-const HomeContent = (props) => {
+const HomeContent = () => {
+  const history = useHistory();
   const [list, setList] = useState([]);
   const [curentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
@@ -161,7 +163,16 @@ const HomeContent = (props) => {
         {list &&
           list.map((item, index) => {
             return (
-              <div className="single-product" key={`prd-${index}`}>
+              <div
+                className="single-product"
+                key={`prd-${index}`}
+                onClick={() =>
+                  history.push({
+                    pathname: `/product`,
+                    state: { data: item },
+                  })
+                }
+              >
                 <div>
                   <img
                     src={item.img && "data:image/*;base64," + item.img[0]}

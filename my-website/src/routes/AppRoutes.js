@@ -12,6 +12,8 @@ import UserPage from "../containers/User/UserPage/UserPage";
 import Home from "../containers/Common/Home/Home";
 import Cart from "../containers/User/Cart/Cart";
 import HomeContent from "../containers/Common/HomeContent/HomeContent";
+import Product from "../containers/Common/Product/Product";
+import Shop from "../containers/Common/Shop/Shop";
 
 const AppRoutes = () => {
   return (
@@ -43,6 +45,16 @@ const AppRoutes = () => {
             <PrivateRoute role={["UserRole", "AdminRole"]}>
               <UserPage />
             </PrivateRoute>
+          </Route>
+
+          <Route path="/product">
+            <Home />
+            <Product />
+          </Route>
+
+          <Route path="/shop">
+            <Home />
+            <Shop />
           </Route>
 
           <Route path="/cart">
