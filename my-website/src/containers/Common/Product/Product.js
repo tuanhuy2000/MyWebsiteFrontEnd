@@ -8,8 +8,10 @@ import { useEffect } from "react";
 import { GetShopByProductId } from "../../../services/ShopServices";
 import { toast } from "react-toastify";
 import { CountProductOfShop } from "../../../services/ProductServices";
+import { useHistory } from "react-router-dom";
 
 const Product = () => {
+  const history = useHistory();
   const location = useLocation();
   const [currentUpImg, setCurrentUpImg] = useState("");
   const [isOpen, setIsOpen] = useState(false);
@@ -27,7 +29,9 @@ const Product = () => {
 
   useEffect(() => {
     if (data) {
-      setCurrentUpImg(data.img[0]);
+      if (data.img) {
+        setCurrentUpImg(data.img[0]);
+      }
       GetShopByProductId(data.id).then((res) => {
         if (res.data) {
           if (res.data.success) {
@@ -72,18 +76,19 @@ const Product = () => {
                 />
               </div>
               <div className="img-down col-12">
-                {data.img.map((item, index) => {
-                  return (
-                    <div className="img-small col-3" key={`img-${index}`}>
-                      <img
-                        src={item && "data:image/*;base64," + item}
-                        alt="img"
-                        onClick={() => handleChangeImg(item)}
-                        className={currentUpImg === item ? "active" : ""}
-                      />
-                    </div>
-                  );
-                })}
+                {data.img &&
+                  data.img.map((item, index) => {
+                    return (
+                      <div className="img-small col-3" key={`img-${index}`}>
+                        <img
+                          src={item && "data:image/*;base64," + item}
+                          alt="img"
+                          onClick={() => handleChangeImg(item)}
+                          className={currentUpImg === item ? "active" : ""}
+                        />
+                      </div>
+                    );
+                  })}
               </div>
             </div>
             <div className="content-right col-7">
@@ -122,7 +127,15 @@ const Product = () => {
               </div>
               <div className="shop-name">
                 <label>{shop.name}</label>
-                <button className="btn-view">
+                <button
+                  className="btn-view"
+                  onClick={() =>
+                    history.push({
+                      pathname: `/shop`,
+                      state: { data: shop },
+                    })
+                  }
+                >
                   <i className="fas fa-store"></i>View Shop
                 </button>
               </div>
@@ -135,7 +148,7 @@ const Product = () => {
             <div className="describe">{data.information}</div>
           </div>
         </div>
-        {isOpen && (
+        {isOpen && data.img && (
           <Lightbox
             mainSrc={"data:image/*;base64," + data.img[photoIndex]}
             nextSrc={

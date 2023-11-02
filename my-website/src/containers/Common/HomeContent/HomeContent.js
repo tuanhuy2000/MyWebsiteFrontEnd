@@ -4,14 +4,16 @@ import "./HomeContent.scss";
 import {
   GetAllTypeProduct,
   GetPageProduct,
+  GetPageProductOfShop,
   SearchProduct,
+  SearchProductOfShop,
 } from "../../../services/ProductServices";
 import { useEffect } from "react";
 import ReactPaginate from "react-paginate";
 import { GetLocation } from "../../../services/Common";
 import { useHistory } from "react-router-dom";
 
-const HomeContent = () => {
+const HomeContent = (props) => {
   const history = useHistory();
   const [list, setList] = useState([]);
   const [curentPage, setCurrentPage] = useState(1);
@@ -27,6 +29,18 @@ const HomeContent = () => {
 
   const getPageProduct = async (pageNum, perPage) => {
     let res = await GetPageProduct(pageNum, perPage);
+    if (res.data) {
+      if (res.data.success) {
+        setList(res.data.data.data);
+        setTotalPages(res.data.data.totalPages);
+      } else {
+        toast.warning("Cann't get product");
+      }
+    }
+  };
+
+  const getPageProductOfShop = async (pageNum, perPage, idShop) => {
+    let res = await GetPageProductOfShop(pageNum, perPage, idShop);
     if (res.data) {
       if (res.data.success) {
         setList(res.data.data.data);
@@ -60,6 +74,11 @@ const HomeContent = () => {
       handleSearch(+event.selected + 1);
       setCurrentPage(event.selected + 1);
     } else {
+      if (props.shop) {
+        getPageProductOfShop(+event.selected + 1, perPage, props.shop);
+        setCurrentPage(event.selected + 1);
+        return;
+      }
       getPageProduct(+event.selected + 1, perPage);
       setCurrentPage(event.selected + 1);
     }
@@ -71,14 +90,20 @@ const HomeContent = () => {
       let ty;
       city === "All" ? (ci = "") : (ci = city);
       type === "All" ? (ty = "") : (ty = type);
-      let res = await SearchProduct(
-        pageNum,
-        perPage,
-        keyWord,
-        ci,
-        ty,
-        direction
-      );
+      let res;
+      if (props.shop) {
+        res = await SearchProductOfShop(
+          pageNum,
+          perPage,
+          keyWord,
+          ci,
+          ty,
+          direction,
+          props.shop
+        );
+      } else {
+        res = await SearchProduct(pageNum, perPage, keyWord, ci, ty, direction);
+      }
       if (res.data) {
         if (res.data.success) {
           setTotalPages(res.data.data.totalPages);
@@ -99,9 +124,13 @@ const HomeContent = () => {
   };
 
   useEffect(() => {
-    getPageProduct(curentPage, perPage);
     GetCity();
     GetAllType();
+    if (props.shop) {
+      getPageProductOfShop(curentPage, perPage, props.shop);
+      return;
+    }
+    getPageProduct(curentPage, perPage);
   }, []);
 
   useEffect(() => {

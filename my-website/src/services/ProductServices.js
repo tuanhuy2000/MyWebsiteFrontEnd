@@ -93,6 +93,26 @@ const CountProductOfShop = (id) => {
   return axios.get(`/api/Product/CountProductOfShop?id=${id}`);
 };
 
+const GetPageProductOfShop = (pageNum, perPage, idShop) => {
+  return axios.get(
+    `/api/Product/pageProductOfShop?pageNum=${pageNum}&perPage=${perPage}&idShop=${idShop}`
+  );
+};
+
+const SearchProductOfShop = (
+  pageNum,
+  perPage,
+  keyWord,
+  address,
+  type,
+  direction,
+  idShop
+) => {
+  return axios.get(
+    `/api/Product/searchProductOfShop?pageNum=${pageNum}&perPage=${perPage}&keyWord=${keyWord}&address=${address}&type=${type}&direction=${direction}&idShop=${idShop}`
+  );
+};
+
 export {
   GetAllTypeProduct,
   CreateProduct,
@@ -107,4 +127,6 @@ export {
   GetPageProduct,
   SearchProduct,
   CountProductOfShop,
+  GetPageProductOfShop,
+  SearchProductOfShop,
 };
