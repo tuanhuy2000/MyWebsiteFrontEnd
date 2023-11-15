@@ -34,16 +34,6 @@ const ModalAddProduct = (props) => {
   const dispatch = useDispatch();
   const history = useHistory();
 
-  const GetCity = async () => {
-    let res = await GetLocation();
-    setListCity(res.data);
-  };
-
-  const GetAllType = async () => {
-    let res = await GetAllTypeProduct();
-    setListType(res.data.data);
-  };
-
   const handleChooseImg = (index) => {
     let base64String = "";
     let file = document.querySelector(`input[id=test${+index}]`)["files"][0];
@@ -262,8 +252,16 @@ const ModalAddProduct = (props) => {
   };
 
   useEffect(() => {
-    GetCity();
-    GetAllType();
+    let isMounted = true;
+    GetLocation().then((res) => {
+      if (isMounted) setListCity(res.data);
+    });
+    GetAllTypeProduct().then((res) => {
+      if (isMounted) setListType(res.data.data);
+    });
+    return () => {
+      isMounted = false;
+    };
   }, []);
 
   useEffect(() => {

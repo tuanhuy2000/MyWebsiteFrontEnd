@@ -113,6 +113,10 @@ const SearchProductOfShop = (
   );
 };
 
+const GetProductById = (id) => {
+  return axios.get(`/api/Product/GetProductById?id=${id}`);
+};
+
 export {
   GetAllTypeProduct,
   CreateProduct,
@@ -129,4 +133,5 @@ export {
   CountProductOfShop,
   GetPageProductOfShop,
   SearchProductOfShop,
+  GetProductById,
 };

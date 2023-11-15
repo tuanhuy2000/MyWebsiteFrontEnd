@@ -36,18 +36,6 @@ const ModalAddCoupon = (props) => {
   const dispatch = useDispatch();
   const history = useHistory();
 
-  const GetAllType = async () => {
-    let res = await GetAllTypeCoupon();
-    setListType(res.data.data);
-  };
-
-  const getAllTypeProduct = async () => {
-    let res = await GetAllTypeProduct();
-    var list = res.data.data;
-    list.push("All");
-    setListTypeProduct(list);
-  };
-
   const handleAddCoupon = async () => {
     const { v4: uuidv4 } = require("uuid");
     const random_uuid = uuidv4();
@@ -299,8 +287,18 @@ const ModalAddCoupon = (props) => {
   };
 
   useEffect(() => {
-    GetAllType();
-    getAllTypeProduct();
+    let isMounted = true;
+    GetAllTypeCoupon().then((res) => {
+      if (isMounted) setListType(res.data.data);
+    });
+    GetAllTypeProduct().then((res) => {
+      var list = res.data.data;
+      list.push("All");
+      if (isMounted) setListTypeProduct(list);
+    });
+    return () => {
+      isMounted = false;
+    };
   }, []);
 
   useEffect(() => {

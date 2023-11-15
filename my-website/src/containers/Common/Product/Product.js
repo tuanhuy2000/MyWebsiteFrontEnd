@@ -9,6 +9,10 @@ import { GetShopByProductId } from "../../../services/ShopServices";
 import { toast } from "react-toastify";
 import { CountProductOfShop } from "../../../services/ProductServices";
 import { useHistory } from "react-router-dom";
+import { AddToCart } from "../../../services/CartServices";
+import { useDispatch, useSelector } from "react-redux";
+import { RenewToken, getCookie } from "../../../services/Common";
+import { handleLogoutRedux } from "../../../redux/actions/userAction";
 
 const Product = () => {
   const history = useHistory();
@@ -20,11 +24,69 @@ const Product = () => {
   const [shop, setShop] = useState({});
   const [productShop, setProductShop] = useState(0);
   const data = location.state.data;
+  const account = useSelector((state) => state.user.account);
+  const dispatch = useDispatch();
+
+  const handleQuantityChange = (event) => {
+    if (event.target.value < 1) {
+      setQuantity(1);
+      return;
+    }
+    if (event.target.value > data.quantity) {
+      setQuantity(data.quantity);
+      return;
+    }
+    setQuantity(event.target.value);
+  };
 
   const handleChangeImg = (img) => {
     setCurrentUpImg(img);
     let index = data.img.findIndex((item) => item === img);
     setPhotoIndex(index);
+  };
+
+  const handleAdd = async () => {
+    if (account) {
+      const config = {
+        headers: { Authorization: `Bearer ${getCookie("Token")}` },
+      };
+      let res = await AddToCart(config, account.id, data.id, quantity);
+      if (res.data) {
+        if (res.data.success) {
+          toast.success(res.data.message);
+        } else {
+          toast.warning(res.data.message);
+        }
+      } else {
+        if (+res === 401) {
+          RenewToken().then((token) => {
+            if (token) {
+              document.cookie = "Token=" + token + ";";
+              const config2 = {
+                headers: { Authorization: `Bearer ${token}` },
+              };
+              AddToCart(config2, account.id, data.id, quantity).then((res) => {
+                if (res.data) {
+                  if (res.data.success) {
+                    toast.success(res.data.message);
+                  } else {
+                    toast.warning(res.data.message);
+                  }
+                }
+              });
+            } else {
+              toast.error("PLease login to continue");
+              dispatch(handleLogoutRedux());
+              history.push(`/login`);
+            }
+          });
+        } else {
+          toast.error("Error");
+        }
+      }
+    } else {
+      history.push(`/login`);
+    }
   };
 
   useEffect(() => {
@@ -107,12 +169,12 @@ const Product = () => {
                   min="1"
                   max={data.quantity}
                   value={quantity}
-                  onChange={(event) => setQuantity(event.target.value)}
+                  onChange={(event) => handleQuantityChange(event)}
                 />
                 <span>{data.quantity} products available</span>
               </div>
               <div className="group-button">
-                <button className="add">
+                <button className="add" onClick={() => handleAdd()}>
                   <i className="fas fa-cart-plus"></i>
                   Add to cart
                 </button>

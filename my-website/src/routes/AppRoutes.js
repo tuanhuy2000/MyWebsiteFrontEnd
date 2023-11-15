@@ -58,6 +58,7 @@ const AppRoutes = () => {
           </Route>
 
           <Route path="/cart">
+            <Home />
             <PrivateRoute role={["UserRole", "AdminRole"]}>
               <Cart />
             </PrivateRoute>

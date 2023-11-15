@@ -1,6 +1,6 @@
 import { useState } from "react";
 import HomeContent from "../HomeContent/HomeContent";
-import { useLocation, useHistory } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import { useEffect } from "react";
 import { toast } from "react-toastify";
 import "./Shop.scss";
@@ -8,7 +8,6 @@ import { CountProductOfShop } from "../../../services/ProductServices";
 
 const Shop = () => {
   const location = useLocation();
-  const history = useHistory();
   const data = location.state.data;
   const [productShop, setProductShop] = useState(0);
 
