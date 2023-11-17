@@ -14,6 +14,7 @@ import Cart from "../containers/User/Cart/Cart";
 import HomeContent from "../containers/Common/HomeContent/HomeContent";
 import Product from "../containers/Common/Product/Product";
 import Shop from "../containers/Common/Shop/Shop";
+import Buying from "../containers/User/Buying/Buying";
 
 const AppRoutes = () => {
   return (
@@ -61,6 +62,12 @@ const AppRoutes = () => {
             <Home />
             <PrivateRoute role={["UserRole", "AdminRole"]}>
               <Cart />
+            </PrivateRoute>
+          </Route>
+
+          <Route path="/buying">
+            <PrivateRoute role={["UserRole", "AdminRole"]}>
+              <Buying />
             </PrivateRoute>
           </Route>
 

@@ -44,6 +44,9 @@ const ItemCart = (props) => {
     );
     if (res.data) {
       if (res.data.success) {
+        props.func();
+        props.data.quantity = event.target.value;
+        props.change(props.data);
       } else {
         toast.warning(res.data.message);
       }
@@ -64,6 +67,9 @@ const ItemCart = (props) => {
             ).then((res) => {
               if (res.data) {
                 if (res.data.success) {
+                  props.func();
+                  props.data.quantity = event.target.value;
+                  props.change(props.data);
                 } else {
                   toast.warning(res.data.message);
                 }

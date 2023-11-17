@@ -1,13 +1,18 @@
 .container-cart {
   display: flex;
-  justify-content: center;
+  flex-direction: column;
+  align-items: center;
   background-color: rgb(245, 245, 245);
+  height: 85vh;
+  position: relative;
   .item-cart {
     display: flex;
     flex-direction: column;
     gap: 2vh;
     padding: 2vh;
-
+    height: 75vh;
+    overflow-x: auto;
+    overflow-y: auto;
     .item {
       display: flex;
       box-shadow: 0 3px 10px rgb(200, 200, 200);
@@ -72,6 +77,50 @@
           color: rgb(100, 100, 100);
         }
       }
+    }
+  }
+  .buying {
+    position: absolute;
+    bottom: 0;
+    border-top: 2px solid rgb(220, 220, 220);
+    background-color: white;
+    height: 10vh;
+    width: 100vw;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 10px;
+    gap: 20px;
+    div {
+      gap: 5px;
+    }
+    p {
+      margin: 0;
+      font-size: 1.5vh;
+      b {
+        font-size: 2vh;
+        color: #ee4d2d;
+      }
+    }
+    .btn-enable {
+      background-color: #ee4d2d;
+      border: none;
+      outline: none;
+      border-radius: 3px;
+      height: 5vh;
+      width: 25vw;
+      font-size: 2vh;
+      color: white;
+    }
+    .btn-disable {
+      background-color: rgb(200, 200, 200);
+      border: none;
+      outline: none;
+      border-radius: 3px;
+      height: 5vh;
+      width: 25vw;
+      font-size: 2vh;
+      color: white;
     }
   }
 }

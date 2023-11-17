@@ -17,13 +17,14 @@ import { handleLogoutRedux } from "../../../redux/actions/userAction";
 const Product = () => {
   const history = useHistory();
   const location = useLocation();
+  const data = location.state.data;
   const [currentUpImg, setCurrentUpImg] = useState("");
   const [isOpen, setIsOpen] = useState(false);
   const [photoIndex, setPhotoIndex] = useState(0);
   const [quantity, setQuantity] = useState(1);
   const [shop, setShop] = useState({});
   const [productShop, setProductShop] = useState(0);
-  const data = location.state.data;
+
   const account = useSelector((state) => state.user.account);
   const dispatch = useDispatch();
 

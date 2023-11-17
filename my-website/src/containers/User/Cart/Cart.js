@@ -13,6 +13,7 @@ const Cart = () => {
   const history = useHistory();
   const [list, setList] = useState([]);
   const [listBuy, setListBuy] = useState([]);
+  const [total, setTotal] = useState(0);
   const account = useSelector((state) => state.user.account);
   const dispatch = useDispatch();
 
@@ -61,13 +62,72 @@ const Cart = () => {
       let tmpList = listBuy;
       tmpList.push(item);
       setListBuy(tmpList);
+      GetCost();
     } else {
-      let tmpList = listBuy;
-      const index = tmpList.indexOf(item);
-      if (index > -1) {
-        tmpList.splice(index, 1);
+      listBuy.map((i) => {
+        if (i.id == item.id) {
+          let tmpList = listBuy;
+          const index = tmpList.indexOf(i);
+          if (index > -1) {
+            tmpList.splice(index, 1);
+          }
+          setListBuy(tmpList);
+          GetCost();
+          return;
+        }
+      });
+    }
+  };
+
+  const GetCost = () => {
+    let tmpTotal = 0;
+    listBuy.map((item) => {
+      tmpTotal += item.quantity * item.price;
+    });
+    setTotal(tmpTotal);
+  };
+
+  const ChangeQuantity = (item) => {
+    listBuy.map((i) => {
+      if (i.id == item.id) {
+        let tmpList = listBuy;
+        const index = tmpList.indexOf(i);
+        if (index > -1) {
+          tmpList.splice(index, 1);
+        }
+        tmpList.push(item);
+        setListBuy(tmpList);
+        GetCost();
+        return;
       }
-      setListBuy(tmpList);
+    });
+  };
+
+  const handleSelectALl = (event) => {
+    if (event.target.checked) {
+      list.map((item) => {
+        listBuy.map((i) => {
+          if (i.id === item.id) {
+            let tmpList = listBuy;
+            const index = tmpList.indexOf(i);
+            if (index > -1) {
+              tmpList.splice(index, 1);
+            }
+            setListBuy(tmpList);
+            return;
+          }
+        });
+        listBuy.push(item);
+      });
+      GetCost();
+    } else {
+      setListBuy([]);
+      setTotal(0);
+    }
+
+    let checkboxes = document.getElementsByName("check");
+    for (var i = 0, n = checkboxes.length; i < n; i++) {
+      checkboxes[i].checked = event.target.checked;
     }
   };
 
@@ -87,9 +147,14 @@ const Cart = () => {
                     <input
                       type="checkbox"
                       onClick={(event) => AddProduct(item, event)}
+                      name="check"
                     />
                   </div>
-                  <ItemCart data={item} func={GetProduct} />
+                  <ItemCart
+                    data={item}
+                    func={GetProduct}
+                    change={ChangeQuantity}
+                  />
                 </div>
               );
             })
@@ -110,6 +175,31 @@ const Cart = () => {
               </Alert>
             </div>
           )}
+        </div>
+        <div className="buying">
+          <div className="d-flex">
+            <input
+              type="checkbox"
+              onClick={(event) => handleSelectALl(event)}
+            />
+            <p>Select all</p>
+          </div>
+          <p>
+            Total payment ( {listBuy.length} product ):{" "}
+            <b>{new Intl.NumberFormat("de-DE").format(total)}₫</b>
+          </p>
+          <button
+            onClick={() =>
+              history.push({
+                pathname: `/buying`,
+                state: { data: listBuy },
+              })
+            }
+            disabled={listBuy.length > 0 ? false : true}
+            className={listBuy.length > 0 ? "btn-enable" : "btn-disable"}
+          >
+            Buy
+          </button>
         </div>
       </div>
     </>
