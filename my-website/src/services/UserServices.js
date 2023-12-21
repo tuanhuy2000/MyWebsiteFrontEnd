@@ -82,6 +82,36 @@ const SearchUser = (config, pageNum, perPage, direction, key) => {
   );
 };
 
+const addAddress = (config, uid, id, name, phone, fullAddress, type) => {
+  return axios.post(
+    `/api/User/AddAddress?id=${uid}`,
+    { id, name, phone, fullAddress, type },
+    config
+  );
+};
+
+const getAllAddress = (config, uid) => {
+  return axios.get(`/api/User/GetAllAddress?id=${uid}`, config);
+};
+
+const ChangeAddress = (config, id, name, phone, fullAddress, type) => {
+  return axios.put(
+    `/api/User/ChangeAddress`,
+    {
+      id,
+      name,
+      phone,
+      fullAddress,
+      type,
+    },
+    config
+  );
+};
+
+const DeleteAddress = (config, id) => {
+  return axios.delete(`/api/User/DeleteAddress?id=${id}`, config);
+};
+
 export {
   signin,
   login,
@@ -93,4 +123,8 @@ export {
   ChangePassword,
   ChangeUserInfor,
   SearchUser,
+  addAddress,
+  getAllAddress,
+  ChangeAddress,
+  DeleteAddress,
 };

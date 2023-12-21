@@ -1,0 +1,15 @@
+.head {
+  height: 10vh;
+  display: flex;
+  align-items: center;
+  font-size: 3vh;
+  padding: 0 15px;
+  background-color: white;
+  i {
+    color: #ee4d2d;
+    width: 0;
+  }
+  p {
+    margin: 0 auto;
+  }
+}

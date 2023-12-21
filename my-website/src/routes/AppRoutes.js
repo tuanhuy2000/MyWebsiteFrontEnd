@@ -14,7 +14,9 @@ import Cart from "../containers/User/Cart/Cart";
 import HomeContent from "../containers/Common/HomeContent/HomeContent";
 import Product from "../containers/Common/Product/Product";
 import Shop from "../containers/Common/Shop/Shop";
-import Buying from "../containers/User/Buying/Buying";
+import Pay from "../containers/User/Pay/Pay";
+import ChooseAddress from "../containers/User/Pay/ChooseAddress/ChooseAddress";
+import AddAddress from "../containers/User/Pay/ChooseAddress/AddAddress/AddAddress";
 
 const AppRoutes = () => {
   return (
@@ -65,9 +67,21 @@ const AppRoutes = () => {
             </PrivateRoute>
           </Route>
 
-          <Route path="/buying">
+          <Route path="/pay">
             <PrivateRoute role={["UserRole", "AdminRole"]}>
-              <Buying />
+              <Pay />
+            </PrivateRoute>
+          </Route>
+
+          <Route path="/chooseAddress">
+            <PrivateRoute role={["UserRole", "AdminRole"]}>
+              <ChooseAddress />
+            </PrivateRoute>
+          </Route>
+
+          <Route path="/addAddress">
+            <PrivateRoute role={["UserRole", "AdminRole"]}>
+              <AddAddress />
             </PrivateRoute>
           </Route>
 

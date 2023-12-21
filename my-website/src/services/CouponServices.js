@@ -10,6 +10,8 @@ const CreateShopCoupon = (
   code,
   quantity,
   worth,
+  minimum,
+  maximum,
   describe,
   from,
   to,
@@ -19,7 +21,19 @@ const CreateShopCoupon = (
 ) => {
   return axios.post(
     `/api/Coupon/CreateShopCoupon?id=${uid}`,
-    { id, code, quantity, worth, describe, from, to, type, productType },
+    {
+      id,
+      code,
+      quantity,
+      worth,
+      minimum,
+      maximum,
+      describe,
+      from,
+      to,
+      type,
+      productType,
+    },
     config
   );
 };
@@ -41,6 +55,8 @@ const ChangeCoupon = (
   code,
   quantity,
   worth,
+  minimum,
+  maximum,
   describe,
   from,
   to,
@@ -49,7 +65,19 @@ const ChangeCoupon = (
 ) => {
   return axios.put(
     `/api/Coupon/ChangeCoupon`,
-    { id, code, quantity, worth, describe, from, to, type, productType },
+    {
+      id,
+      code,
+      quantity,
+      worth,
+      minimum,
+      maximum,
+      describe,
+      from,
+      to,
+      type,
+      productType,
+    },
     config
   );
 };
@@ -103,6 +131,8 @@ const CreateAdminCoupon = (
   code,
   quantity,
   worth,
+  minimum,
+  maximum,
   describe,
   from,
   to,
@@ -111,7 +141,19 @@ const CreateAdminCoupon = (
 ) => {
   return axios.post(
     `/api/Coupon/CreateAdminCoupon`,
-    { id, code, quantity, worth, describe, from, to, type, productType },
+    {
+      id,
+      code,
+      quantity,
+      worth,
+      minimum,
+      maximum,
+      describe,
+      from,
+      to,
+      type,
+      productType,
+    },
     config
   );
 };
@@ -165,6 +207,20 @@ const CountAdminCoupon = () => {
   return axios.get(`/api/Coupon/CountAdminCoupon`);
 };
 
+const GetShopCouponByProductType = (config, sId, pType, cost) => {
+  return axios.get(
+    `/api/Coupon/ShopCouponByProductType?sId=${sId}&pType=${pType}&cost=${cost}`,
+    config
+  );
+};
+
+const GetCouponByProductType = (config, pType, cType, cost) => {
+  return axios.get(
+    `/api/Coupon/CouponByProductType?pType=${pType}&cType=${cType}&cost=${cost}`,
+    config
+  );
+};
+
 export {
   GetAllTypeCoupon,
   CreateShopCoupon,
@@ -181,4 +237,6 @@ export {
   SearchAdminCouponByDate,
   CountCouponOfUser,
   CountAdminCoupon,
+  GetShopCouponByProductType,
+  GetCouponByProductType,
 };

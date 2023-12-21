@@ -191,7 +191,7 @@ const Cart = () => {
           <button
             onClick={() =>
               history.push({
-                pathname: `/buying`,
+                pathname: `/pay`,
                 state: { data: listBuy },
               })
             }

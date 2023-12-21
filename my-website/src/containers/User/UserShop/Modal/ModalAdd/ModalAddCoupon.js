@@ -25,6 +25,8 @@ const ModalAddCoupon = (props) => {
   const [code, setCode] = useState("");
   const [quantity, setQuantity] = useState("");
   const [worth, setWorth] = useState("");
+  const [minimum, setMinimum] = useState("");
+  const [maximum, setMaximum] = useState("");
   const [describe, setDescribe] = useState("");
   const [from, setFrom] = useState("");
   const [to, setTo] = useState("");
@@ -55,6 +57,8 @@ const ModalAddCoupon = (props) => {
         code,
         quantity,
         worth,
+        minimum,
+        maximum,
         describe,
         from,
         to,
@@ -84,6 +88,8 @@ const ModalAddCoupon = (props) => {
                 code,
                 quantity,
                 worth,
+                minimum,
+                maximum,
                 describe,
                 from,
                 to,
@@ -133,6 +139,8 @@ const ModalAddCoupon = (props) => {
         code,
         quantity,
         worth,
+        minimum,
+        maximum,
         describe,
         from,
         to,
@@ -161,6 +169,8 @@ const ModalAddCoupon = (props) => {
                 code,
                 quantity,
                 worth,
+                minimum,
+                maximum,
                 describe,
                 from,
                 to,
@@ -211,6 +221,8 @@ const ModalAddCoupon = (props) => {
         code,
         quantity,
         worth,
+        minimum,
+        maximum,
         describe,
         from,
         to,
@@ -239,6 +251,8 @@ const ModalAddCoupon = (props) => {
                 code,
                 quantity,
                 worth,
+                minimum,
+                maximum,
                 describe,
                 from,
                 to,
@@ -289,7 +303,16 @@ const ModalAddCoupon = (props) => {
   useEffect(() => {
     let isMounted = true;
     GetAllTypeCoupon().then((res) => {
-      if (isMounted) setListType(res.data.data);
+      if (props.type !== "create admin") {
+        let tmpList = res.data.data;
+        const index = tmpList.indexOf("FreeShipping");
+        if (index > -1) {
+          tmpList.splice(index, 1);
+        }
+        if (isMounted) setListType(tmpList);
+      } else {
+        if (isMounted) setListType(res.data.data);
+      }
     });
     GetAllTypeProduct().then((res) => {
       var list = res.data.data;
@@ -306,6 +329,8 @@ const ModalAddCoupon = (props) => {
       setCode(props.data.code);
       setQuantity(props.data.quantity);
       setWorth(props.data.worth);
+      setMinimum(props.data.minimum);
+      setMaximum(props.data.maximum);
       setDescribe(props.data.describe);
       setFrom(ConvertDateInput(props.data.from));
       setTo(ConvertDateInput(props.data.to));
@@ -315,11 +340,31 @@ const ModalAddCoupon = (props) => {
       setCode("");
       setQuantity("");
       setWorth("");
+      setMinimum("");
+      setMaximum("");
       setDescribe("");
       setFrom("");
       setTo("");
     }
   }, [props]);
+
+  useEffect(() => {
+    let isMounted = true;
+    if (type !== "Discount") {
+      var list = ["All"];
+      setTypeProduct("All");
+      if (isMounted) setListTypeProduct(list);
+    } else {
+      GetAllTypeProduct().then((res) => {
+        var list = res.data.data;
+        list.push("All");
+        if (isMounted) setListTypeProduct(list);
+      });
+    }
+    return () => {
+      isMounted = false;
+    };
+  }, [type]);
 
   return (
     <div>
@@ -355,6 +400,24 @@ const ModalAddCoupon = (props) => {
                   className="form-control"
                   value={worth}
                   onChange={(event) => setWorth(event.target.value)}
+                />
+              </div>
+              <div className="mb-3">
+                <label className="form-label">Minimum</label>
+                <input
+                  type="text"
+                  className="form-control"
+                  value={minimum}
+                  onChange={(event) => setMinimum(event.target.value)}
+                />
+              </div>
+              <div className="mb-3">
+                <label className="form-label">Maximum</label>
+                <input
+                  type="text"
+                  className="form-control"
+                  value={maximum}
+                  onChange={(event) => setMaximum(event.target.value)}
                 />
               </div>
               <div className="mb-3">

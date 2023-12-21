@@ -1,0 +1,209 @@
+.container-p {
+  background-color: rgb(245, 245, 245);
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
+  padding: 10px;
+  padding-bottom: 9vh;
+  p {
+    margin: 0;
+  }
+  .c-address {
+    display: flex;
+    white-space: pre-wrap;
+    padding: 15px;
+    background-color: white;
+    margin-top: 15px;
+    box-shadow: 0 3px 10px rgb(200, 200, 200);
+    border-radius: 10px;
+    i {
+      margin-right: 10px;
+      color: #ee4d2d;
+    }
+    .link-c {
+      color: #ee4d2d;
+      cursor: pointer;
+      text-decoration: underline;
+    }
+  }
+
+  .item-s {
+    box-shadow: 0 3px 10px rgb(200, 200, 200);
+    border-radius: 10px;
+    .shop-n {
+      font-weight: 700;
+      font-size: 17px;
+      background-color: white;
+      padding: 5px 15px;
+      border-radius: 10px 10px 0 0;
+    }
+    .item-p {
+      position: relative;
+      img {
+        width: 100px;
+        height: 100px;
+        padding: 10px;
+      }
+      .product-t {
+        flex-direction: column;
+        justify-content: center;
+        gap: 10px;
+        .product-n {
+          overflow: hidden;
+          text-overflow: ellipsis;
+          display: -webkit-box;
+          -webkit-line-clamp: 1;
+          -webkit-box-orient: vertical;
+        }
+      }
+      .product-p {
+        color: rgb(120, 120, 120);
+      }
+      .product-q {
+        color: rgb(120, 120, 120);
+        position: absolute;
+        right: 21px;
+        bottom: 21px;
+      }
+    }
+    .ship-c {
+      background-color: rgb(0, 180, 140, 0.04);
+      border-top: 1px solid rgb(0, 180, 140);
+      border-bottom: 1px solid rgb(0, 180, 140);
+      color: rgb(0, 180, 140);
+      flex-direction: column;
+      gap: 10px;
+      padding: 10px;
+      cursor: pointer;
+      .ship-t {
+        padding-bottom: 10px;
+        border-bottom: 1px solid rgb(210, 210, 210);
+      }
+      .ship-cost {
+        color: black;
+        justify-content: space-between;
+        align-items: center;
+        .dis {
+          text-decoration: line-through;
+          color: rgb(150, 150, 150);
+        }
+      }
+      .ship-s {
+        align-items: center;
+        font-size: 15px;
+        gap: 5px;
+      }
+    }
+    .cost-t {
+      padding: 10px;
+      justify-content: space-between;
+      b {
+        color: #ee4d2d;
+      }
+    }
+  }
+  .shop-v {
+    background-color: white;
+    justify-content: space-between;
+    padding: 10px 15px;
+    i {
+      color: #ee4d2d;
+      padding-right: 5px;
+    }
+    .select-vc {
+      color: rgb(120, 120, 120);
+    }
+    .selected-vc {
+      border: 1px solid #ee4d2d;
+      color: #ee4d2d;
+      padding: 3px;
+      font-size: 12px;
+    }
+  }
+  .c-voucher {
+    box-shadow: 0 3px 10px rgb(200, 200, 200);
+    border-radius: 10px;
+    .v-ship {
+      border-radius: 10px 10px 0 0;
+      border-bottom: 1px solid rgb(170, 170, 170);
+      i {
+        color: rgb(0, 180, 140);
+      }
+      .selected-vc {
+        border: 1px solid rgb(0, 180, 140);
+        color: rgb(0, 180, 140);
+      }
+    }
+    .v-dis {
+      border-radius: 0 0 10px 10px;
+    }
+  }
+  .c-p-type {
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 15px;
+    background-color: white;
+    box-shadow: 0 3px 10px rgb(200, 200, 200);
+    border-radius: 10px;
+    cursor: pointer;
+    i {
+      font-size: 20px;
+      color: #ee4d2d;
+      padding-right: 5px;
+    }
+    p {
+      color: rgb(120, 120, 120);
+    }
+  }
+  .t-container {
+    padding: 10px 15px;
+    background-color: white;
+    box-shadow: 0 3px 10px rgb(200, 200, 200);
+    border-radius: 10px;
+    .t-title {
+      margin-bottom: 10px;
+      i {
+        font-size: 20px;
+        padding-right: 5px;
+        color: #eaaf00;
+      }
+    }
+    .t-detail {
+      display: flex;
+      justify-content: space-between;
+      color: rgb(120, 120, 120);
+      font-size: 15px;
+    }
+    .t-total {
+      color: black;
+      font-size: 20px;
+      font-weight: 500;
+      .t-price {
+        color: #ee4d2d;
+      }
+    }
+  }
+}
+.c-order {
+  position: fixed;
+  height: 8vh;
+  bottom: 0;
+  background-color: white;
+  justify-content: right;
+  align-items: center;
+  p {
+    margin: 0 10px;
+    b {
+      font-size: 22px;
+      color: #ee4d2d;
+    }
+  }
+  .btn-order {
+    background-color: #ee4d2d;
+    color: white;
+    font-weight: 600;
+    border: none;
+    font-size: 18px;
+    height: 100%;
+  }
+}

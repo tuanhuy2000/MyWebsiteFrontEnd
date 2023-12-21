@@ -300,7 +300,9 @@ const TableProduct = (props) => {
                         <td>{item.name}</td>
                         <td>{item.price}</td>
                         <td>{item.quantity}</td>
-                        <td>{item.information}</td>
+                        <td>
+                          <div className="infor-p">{item.information}</div>
+                        </td>
                         <td>{item.address}</td>
                         <td>{item.type}</td>
                         <td>

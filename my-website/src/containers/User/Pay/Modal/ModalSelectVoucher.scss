@@ -1,0 +1,38 @@
+.vc-container {
+  border: 1px solid rgb(220, 220, 220);
+  margin: 10px 0;
+  align-items: center;
+  p {
+    margin: 0;
+  }
+  .img-container {
+    width: 100px;
+    height: 100px;
+    align-items: center;
+    justify-content: center;
+    img {
+      width: 70px;
+      height: 70px;
+      border-radius: 50%;
+      border: 1px solid rgb(220, 220, 220);
+    }
+  }
+  .infor-container {
+    border-left: 1px dashed rgb(150, 150, 150);
+    flex-direction: column;
+    justify-content: center;
+    gap: 3px;
+    padding: 10px;
+    .worth {
+      font-size: 18px;
+      font-weight: 600;
+    }
+    .minimum {
+      font-size: 15px;
+    }
+    .type {
+      font-size: 15px;
+      color: rgb(150, 150, 150);
+    }
+  }
+}

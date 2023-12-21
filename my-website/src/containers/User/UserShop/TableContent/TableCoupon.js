@@ -35,7 +35,7 @@ const TableCoupon = (props) => {
   const history = useHistory();
   const [direction] = useState("asc");
   const [curentPage, setCurrentPage] = useState(1);
-  const [perPage] = useState(1);
+  const [perPage] = useState(2);
   const account = useSelector((state) => state.user.account);
   const [isShowModalDelete, setIsShowModalDelete] = useState(false);
   const [isShowModalChange, setIsShowModalChange] = useState(false);
@@ -661,10 +661,12 @@ const TableCoupon = (props) => {
             <Table striped bordered hover>
               <thead>
                 <tr>
-                  <th>STt</th>
+                  <th>STT</th>
                   <th>Code</th>
                   <th>Quantity</th>
                   <th>Worth</th>
+                  <th>Minimum</th>
+                  <th>Maximum</th>
                   <th>Describe</th>
                   <th>From</th>
                   <th>To</th>
@@ -683,6 +685,8 @@ const TableCoupon = (props) => {
                         <td>{item.code}</td>
                         <td>{item.quantity}</td>
                         <td>{item.worth}</td>
+                        <td>{item.minimum}</td>
+                        <td>{item.maximum}</td>
                         <td>{item.describe}</td>
                         <td>{ConvertDate(item.from)}</td>
                         <td>{ConvertDate(item.to)}</td>
@@ -746,6 +750,8 @@ const TableCoupon = (props) => {
                 code: "",
                 quantity: "",
                 worth: "",
+                minimum: "",
+                maximum: "",
                 describe: "",
                 from: "",
                 to: "",

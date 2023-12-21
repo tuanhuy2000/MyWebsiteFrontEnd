@@ -1,0 +1,49 @@
+.container-choose {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 2vh;
+  background-color: rgb(240, 240, 240);
+  .title {
+    font-size: 17px;
+    margin-bottom: 0.5vh;
+  }
+  .item-address {
+    background-color: white;
+    border-top: 2px solid rgb(240, 240, 240);
+    display: flex;
+    padding: 10px;
+    gap: 5px;
+    justify-content: space-between;
+    white-space: pre-wrap;
+    input {
+      margin-right: 5px;
+    }
+    .gr-btn {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      button {
+        border: none;
+        background-color: white;
+        color: #ee4d2d;
+      }
+    }
+  }
+  .add-address {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: white;
+    height: 7vh;
+    color: #ee4d2d;
+    border-top: 2px solid rgb(240, 240, 240);
+    i {
+      font-size: 25px;
+    }
+    p {
+      margin: 0;
+      padding-left: 10px;
+    }
+  }
+}
