@@ -10,7 +10,6 @@ import {
 } from "../../../services/ProductServices";
 import { useEffect } from "react";
 import ReactPaginate from "react-paginate";
-import { GetLocation } from "../../../services/Common";
 import { useHistory } from "react-router-dom";
 
 const HomeContent = (props) => {
@@ -19,10 +18,8 @@ const HomeContent = (props) => {
   const [curentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(0);
   const [perPage] = useState(1);
-  const [listCity, setListCity] = useState([]);
   const [listType, setListType] = useState([]);
   const [keyWord, setKeyWord] = useState("");
-  const [city, setCity] = useState("All");
   const [type, setType] = useState("All");
   const [direction, setDirection] = useState("asc");
   const [check, setCheck] = useState(false);
@@ -51,17 +48,6 @@ const HomeContent = (props) => {
     }
   };
 
-  const GetCity = async () => {
-    let res = await GetLocation();
-
-    var list = [];
-    res.data.map((item) => {
-      list.push(item.Name);
-    });
-    list.unshift("All");
-    setListCity(list);
-  };
-
   const GetAllType = async () => {
     let res = await GetAllTypeProduct();
     var list = res.data.data;
@@ -86,9 +72,7 @@ const HomeContent = (props) => {
 
   const handleSearch = async (pageNum) => {
     if (keyWord) {
-      let ci;
       let ty;
-      city === "All" ? (ci = "") : (ci = city);
       type === "All" ? (ty = "") : (ty = type);
       let res;
       if (props.shop) {
@@ -96,13 +80,12 @@ const HomeContent = (props) => {
           pageNum,
           perPage,
           keyWord,
-          ci,
           ty,
           direction,
           props.shop
         );
       } else {
-        res = await SearchProduct(pageNum, perPage, keyWord, ci, ty, direction);
+        res = await SearchProduct(pageNum, perPage, keyWord, ty, direction);
       }
       if (res.data) {
         if (res.data.success) {
@@ -116,7 +99,6 @@ const HomeContent = (props) => {
         toast.error("Error");
       }
     } else {
-      setCity("");
       setType("");
       setCheck(false);
       getPageProduct(curentPage, perPage);
@@ -124,7 +106,6 @@ const HomeContent = (props) => {
   };
 
   useEffect(() => {
-    GetCity();
     GetAllType();
     if (props.shop) {
       getPageProductOfShop(curentPage, perPage, props.shop);
@@ -137,7 +118,7 @@ const HomeContent = (props) => {
     if (keyWord) {
       handleSearch(curentPage);
     }
-  }, [city, type, direction]);
+  }, [type, direction]);
 
   return (
     <>
@@ -153,17 +134,6 @@ const HomeContent = (props) => {
         </div>
         {check && (
           <>
-            <div className="col-3">
-              <select
-                className="form-select"
-                aria-label=".form-select-sm example"
-                onChange={(event) => setCity(event.target.value)}
-              >
-                {listCity.map((item) => {
-                  return <option key={`city-${item}`}>{item}</option>;
-                })}
-              </select>
-            </div>
             <div className="col-3">
               <select
                 className="form-select"
@@ -215,10 +185,6 @@ const HomeContent = (props) => {
                     <i className="fas fa-dollar-sign"></i>
                     {new Intl.NumberFormat("de-DE").format(item.price)}
                   </div>
-                  <div className="address">
-                    <i className="fas fa-map-marker-alt"></i>
-                    {item.address}
-                  </div>
                 </div>
               </div>
             );
@@ -226,11 +192,11 @@ const HomeContent = (props) => {
       </div>
       <ReactPaginate
         breakLabel="..."
-        nextLabel="next"
+        nextLabel=">"
         onPageChange={handlePageClick}
         pageRangeDisplayed={1}
         pageCount={totalPages}
-        previousLabel="previous"
+        previousLabel="<"
         pageClassName="page-item"
         pageLinkClassName="page-link"
         previousClassName="page-item"

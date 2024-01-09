@@ -23,6 +23,7 @@ const UserShop = () => {
   const [isShowAddCoupon, setIsShowAddCoupon] = useState(false);
   const [dataDelete, setDataDelete] = useState({});
   const [name, setName] = useState("");
+  const [address, setAddress] = useState("");
   const [avatar, setAvatar] = useState("");
   const [contentTable, SetContentTable] = useState();
   const [typeDelete, setTypeDelete] = useState("");
@@ -87,9 +88,11 @@ const UserShop = () => {
       if (res.data) {
         if (res.data.success) {
           setName(res.data.data.name);
+          setAddress(res.data.data.address);
           setAvatar(res.data.data.avatar);
         } else {
           setName("");
+          setAddress("");
           setAvatar("");
         }
       } else {
@@ -191,6 +194,7 @@ const UserShop = () => {
           handleClose={handleClose}
           type={name && avatar ? "change" : "create"}
           name={name && avatar ? name : ""}
+          address={name && avatar ? address : ""}
           avatar={name && avatar ? avatar : ""}
         />
         <ModalDelete

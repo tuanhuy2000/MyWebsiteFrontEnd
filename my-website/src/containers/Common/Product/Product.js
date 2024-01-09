@@ -101,6 +101,7 @@ const Product = () => {
             let shop = {
               id: res.data.data.id,
               name: res.data.data.name,
+              address: res.data.data.address,
               avatar: res.data.data.avatar,
             };
             setShop(shop);
@@ -124,6 +125,14 @@ const Product = () => {
       });
     }
   }, []);
+
+  const handleClickBuyNow = () => {
+    data.quantity = quantity;
+    history.push({
+      pathname: `/pay`,
+      state: { data: [data] },
+    });
+  };
 
   if (data) {
     return (
@@ -161,7 +170,7 @@ const Product = () => {
               </div>
               <div className="address">
                 <i className="fas fa-map-marker-alt"></i>
-                {data.address}
+                {shop.address}
               </div>
               <div className="quantity">
                 <label>Quantity</label>
@@ -179,7 +188,9 @@ const Product = () => {
                   <i className="fas fa-cart-plus"></i>
                   Add to cart
                 </button>
-                <button className="buy">Buy now</button>
+                <button className="buy" onClick={() => handleClickBuyNow()}>
+                  Buy now
+                </button>
               </div>
             </div>
           </div>

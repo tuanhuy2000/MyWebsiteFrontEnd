@@ -21,11 +21,11 @@ const ModalSelectShopVoucher = (props) => {
   const GetListVouchers = async () => {
     let arr = props.data.product;
     let tmp = [];
-    const config = {
-      headers: { Authorization: `Bearer ${getCookie("Token")}` },
-    };
     const asyncRes = await Promise.all(
       arr.map(async (item) => {
+        const config = {
+          headers: { Authorization: `Bearer ${getCookie("Token")}` },
+        };
         let res = await GetShopCouponByProductType(
           config,
           props.data.id,
@@ -40,11 +40,11 @@ const ModalSelectShopVoucher = (props) => {
           }
         } else {
           if (+res === 401) {
-            RenewToken().then((token) => {
-              if (token) {
-                document.cookie = "Token=" + token + ";";
+            RenewToken().then((nToken) => {
+              if (nToken) {
+                document.cookie = "Token=" + nToken + ";";
                 const config2 = {
-                  headers: { Authorization: `Bearer ${token}` },
+                  headers: { Authorization: `Bearer ${nToken}` },
                 };
                 GetShopCouponByProductType(
                   config2,
@@ -72,6 +72,9 @@ const ModalSelectShopVoucher = (props) => {
       })
     );
     tmp = asyncRes[asyncRes.length - 1];
+    const config = {
+      headers: { Authorization: `Bearer ${getCookie("Token")}` },
+    };
     let res = await GetShopCouponByProductType(
       config,
       props.data.id,
@@ -120,11 +123,11 @@ const ModalSelectShopVoucher = (props) => {
   const GetListAdminVouchers = async (cType) => {
     let arr = props.listType;
     let tmp = [];
-    const config = {
-      headers: { Authorization: `Bearer ${getCookie("Token")}` },
-    };
     const asyncRes = await Promise.all(
       arr.map(async (item) => {
+        const config = {
+          headers: { Authorization: `Bearer ${getCookie("Token")}` },
+        };
         let res = await GetCouponByProductType(
           config,
           item.type,
@@ -171,6 +174,9 @@ const ModalSelectShopVoucher = (props) => {
       })
     );
     tmp = asyncRes[asyncRes.length - 1];
+    const config = {
+      headers: { Authorization: `Bearer ${getCookie("Token")}` },
+    };
     let res = await GetCouponByProductType(config, "All", cType, props.cost);
     if (res.data) {
       if (res.data.success) {
@@ -214,13 +220,22 @@ const ModalSelectShopVoucher = (props) => {
   };
 
   useEffect(() => {
-    if (props.data) {
-      GetListVouchers();
-    } else if (props.type == "Discount") {
-      GetListAdminVouchers("Discount");
-    } else if (props.type == "FreeShipping") {
-      GetListAdminVouchers("FreeShipping");
-    }
+    RenewToken().then((nToken) => {
+      if (nToken) {
+        document.cookie = "Token=" + nToken + ";";
+        if (props.data) {
+          GetListVouchers();
+        } else if (props.type === "Discount") {
+          GetListAdminVouchers("Discount");
+        } else if (props.type === "FreeShipping") {
+          GetListAdminVouchers("FreeShipping");
+        }
+      } else {
+        toast.error("PLease login to continue");
+        dispatch(handleLogoutRedux());
+        history.push(`/login`);
+      }
+    });
   }, []);
 
   return (

@@ -233,12 +233,12 @@ const ListUser = () => {
           </div>
           <ReactPaginate
             breakLabel="..."
-            nextLabel="next"
+            nextLabel=">"
             onPageChange={handlePageClick}
             pageRangeDisplayed={1}
             marginPagesDisplayed={1}
             pageCount={totalPages}
-            previousLabel="previous"
+            previousLabel="<"
             pageClassName="page-item"
             pageLinkClassName="page-link"
             previousClassName="page-item"

@@ -17,6 +17,7 @@ import Shop from "../containers/Common/Shop/Shop";
 import Pay from "../containers/User/Pay/Pay";
 import ChooseAddress from "../containers/User/Pay/ChooseAddress/ChooseAddress";
 import AddAddress from "../containers/User/Pay/ChooseAddress/AddAddress/AddAddress";
+import OrderSuccess from "../containers/Common/Notification/OrderSuccess";
 
 const AppRoutes = () => {
   return (
@@ -82,6 +83,13 @@ const AppRoutes = () => {
           <Route path="/addAddress">
             <PrivateRoute role={["UserRole", "AdminRole"]}>
               <AddAddress />
+            </PrivateRoute>
+          </Route>
+
+          <Route path="/notiOrderSuccess">
+            <Home />
+            <PrivateRoute role={["UserRole", "AdminRole"]}>
+              <OrderSuccess />
             </PrivateRoute>
           </Route>
 

@@ -1,8 +1,22 @@
 import { useEffect, useState } from "react";
 import ModalSelectVoucher from "./Modal/ModalSelectVoucher";
 import ModalSelectShippingWay from "./Modal/ModalSelectShippingWay";
+import {
+  AddCouponToOrder,
+  AddProductToOrder,
+  CreateOrder,
+  CreateTransport,
+} from "../../../services/OrderServices";
+import { RenewToken, getCookie } from "../../../services/Common";
+import { toast } from "react-toastify";
+import { useDispatch, useSelector } from "react-redux";
+import { useHistory } from "react-router-dom";
+import { handleLogoutRedux } from "../../../redux/actions/userAction";
 
 const PayItem = (props) => {
+  const account = useSelector((state) => state.user.account);
+  const dispatch = useDispatch();
+  const history = useHistory();
   const [isShow, setIsShow] = useState(false);
   const [isShowShip, setIsShowShip] = useState(false);
   const [shopVoucher, setShopVoucher] = useState();
@@ -120,12 +134,255 @@ const PayItem = (props) => {
     }
   }, [props.shipVoucher, shipCost]);
 
+  const AddTransport = async (id) => {
+    const config = {
+      headers: { Authorization: `Bearer ${getCookie("Token")}` },
+    };
+    const { v4: uuidv4 } = require("uuid");
+    const transport_code = uuidv4();
+    let res = await CreateTransport(
+      config,
+      id,
+      transport_code,
+      shipWay === "Fast" ? "J&TExpress" : "Grab",
+      shipWay
+    );
+    if (res.data) {
+      if (res.data.success) {
+        return true;
+      } else {
+        toast.warning(res.data.message);
+      }
+    } else {
+      if (+res === 401) {
+        RenewToken().then((nToken) => {
+          if (nToken) {
+            document.cookie = "Token=" + nToken + ";";
+            const config2 = {
+              headers: { Authorization: `Bearer ${nToken}` },
+            };
+            CreateTransport(
+              config2,
+              id,
+              transport_code,
+              shipWay === "Fast" ? "J&TExpress" : "Grab",
+              shipWay
+            ).then((res) => {
+              if (res.data) {
+                if (res.data.success) {
+                  return true;
+                } else {
+                  toast.warning(res.data.message);
+                }
+              }
+            });
+          } else {
+            toast.error("PLease login to continue");
+            dispatch(handleLogoutRedux());
+            history.push(`/login`);
+          }
+        });
+      } else {
+        toast.error("Unknow Error");
+      }
+    }
+    return false;
+  };
+
+  const AddOrder = async (oId, tId) => {
+    if (props.address) {
+      const config = {
+        headers: { Authorization: `Bearer ${getCookie("Token")}` },
+      };
+      let res = await CreateOrder(
+        config,
+        oId,
+        props.paymentType,
+        total,
+        (total * props.saleOff) / props.total,
+        account.id,
+        tId,
+        props.address.id
+      );
+      if (res.data) {
+        if (res.data.success) {
+          return true;
+        } else {
+          toast.warning(res.data.message);
+        }
+      } else {
+        if (+res === 401) {
+          RenewToken().then((nToken) => {
+            if (nToken) {
+              document.cookie = "Token=" + nToken + ";";
+              const config2 = {
+                headers: { Authorization: `Bearer ${nToken}` },
+              };
+              CreateOrder(
+                config2,
+                oId,
+                props.paymentType,
+                total,
+                (total * props.saleOff) / props.total,
+                account.id,
+                tId,
+                props.address.id
+              ).then((res) => {
+                if (res.data) {
+                  if (res.data.success) {
+                    return true;
+                  } else {
+                    toast.warning(res.data.message);
+                  }
+                }
+              });
+            } else {
+              toast.error("PLease login to continue");
+              dispatch(handleLogoutRedux());
+              history.push(`/login`);
+            }
+          });
+        } else {
+          toast.error("Unknow Error");
+        }
+      }
+      return false;
+    } else {
+      toast.error("Unknow Address");
+      return false;
+    }
+  };
+
+  const AddSingleOrderCoupon = async (oId, cId) => {
+    const config = {
+      headers: { Authorization: `Bearer ${getCookie("Token")}` },
+    };
+    let res = await AddCouponToOrder(config, oId, cId);
+    if (res.data) {
+      if (res.data.success) {
+        return true;
+      } else {
+        toast.warning(res.data.message);
+      }
+    } else {
+      if (+res === 401) {
+        RenewToken().then((nToken) => {
+          if (nToken) {
+            document.cookie = "Token=" + nToken + ";";
+            const config2 = {
+              headers: { Authorization: `Bearer ${nToken}` },
+            };
+            AddCouponToOrder(config2, oId, cId).then((res) => {
+              if (res.data) {
+                if (res.data.success) {
+                  return true;
+                } else {
+                  toast.warning(res.data.message);
+                }
+              }
+            });
+          } else {
+            toast.error("PLease login to continue");
+            dispatch(handleLogoutRedux());
+            history.push(`/login`);
+          }
+        });
+      } else {
+        toast.error("Unknow Error");
+      }
+    }
+    return false;
+  };
+
+  const AddOrderProduct = (oId) => {
+    props.item.product.map((item) => {
+      item.data.map(async (item2) => {
+        const config = {
+          headers: { Authorization: `Bearer ${getCookie("Token")}` },
+        };
+        let res = await AddProductToOrder(
+          config,
+          oId,
+          item2.id,
+          item2.quantity
+        );
+        if (res.data) {
+          if (res.data.success) {
+          } else {
+            toast.warning(res.data.message);
+            return false;
+          }
+        } else {
+          if (+res === 401) {
+            RenewToken().then((nToken) => {
+              if (nToken) {
+                document.cookie = "Token=" + nToken + ";";
+                const config2 = {
+                  headers: { Authorization: `Bearer ${nToken}` },
+                };
+                AddProductToOrder(config2, oId, item2.id, item2.quantity).then(
+                  (res) => {
+                    if (res.data) {
+                      if (res.data.success) {
+                      } else {
+                        toast.warning(res.data.message);
+                        return false;
+                      }
+                    }
+                  }
+                );
+              } else {
+                toast.error("PLease login to continue");
+                dispatch(handleLogoutRedux());
+                history.push(`/login`);
+                return false;
+              }
+            });
+          } else {
+            toast.error("Unknow Error");
+            return false;
+          }
+        }
+      });
+    });
+    return true;
+  };
+
+  const HandleOrder = async () => {
+    const { v4: uuidv4 } = require("uuid");
+    const transport_uuid = uuidv4();
+    const order_uuid = uuidv4();
+    const response1 = await AddTransport(transport_uuid);
+    if (response1) {
+      const response2 = await AddOrder(order_uuid, transport_uuid);
+      if (response2) {
+        const response3 = await props.AddOrderCoupon(order_uuid);
+        let response4 = true;
+        if (shopVoucher) {
+          response4 = await AddSingleOrderCoupon(order_uuid, shopVoucher.id);
+        }
+        const response5 = await AddOrderProduct(order_uuid);
+        return response3 && response4 && response5 ? true : false;
+      } else {
+        return false;
+      }
+    } else {
+      return false;
+    }
+    //props.setSVDown(false);
+  };
+
   useEffect(() => {
     if (props.sVDown) {
-      if (shopVoucher) {
-        console.log("hihi");
-        props.setSVDown(false);
+      async function fetchData() {
+        const response = await HandleOrder();
+        if (response) {
+          history.push(`/notiOrderSuccess`);
+        } else {
+          toast.error("Order fail");
+        }
       }
+      fetchData();
     }
   }, [props.sVDown]);
 

@@ -11,14 +11,13 @@ const CreateProduct = (
   price,
   quantity,
   information,
-  address,
   type,
   img,
   uid
 ) => {
   return axios.post(
     `/api/Product/CreateProduct?id=${uid}`,
-    { id, name, price, quantity, information, address, type, img },
+    { id, name, price, quantity, information, type, img },
     config
   );
 };
@@ -50,20 +49,13 @@ const ChangeProduct = (
   price,
   quantity,
   information,
-  address,
   type,
   img
 ) => {
   return axios.put(
     `/api/Product/ChangeProduct`,
-    { id, name, price, quantity, information, address, type, img },
+    { id, name, price, quantity, information, type, img },
     config
-  );
-};
-
-const SearchProductOfUserByAddress = (pageNum, perPage, direction, key, id) => {
-  return axios.get(
-    `/api/Product/searchProductOfUserByAddress?pageNum=${pageNum}&perPage=${perPage}&direction=${direction}&key=${key}&id=${id}`
   );
 };
 
@@ -83,9 +75,9 @@ const GetPageProduct = (pageNum, perPage) => {
   );
 };
 
-const SearchProduct = (pageNum, perPage, keyWord, address, type, direction) => {
+const SearchProduct = (pageNum, perPage, keyWord, type, direction) => {
   return axios.get(
-    `/api/Product/searchProduct?pageNum=${pageNum}&perPage=${perPage}&keyWord=${keyWord}&address=${address}&type=${type}&direction=${direction}`
+    `/api/Product/searchProduct?pageNum=${pageNum}&perPage=${perPage}&keyWord=${keyWord}&type=${type}&direction=${direction}`
   );
 };
 
@@ -103,13 +95,12 @@ const SearchProductOfShop = (
   pageNum,
   perPage,
   keyWord,
-  address,
   type,
   direction,
   idShop
 ) => {
   return axios.get(
-    `/api/Product/searchProductOfShop?pageNum=${pageNum}&perPage=${perPage}&keyWord=${keyWord}&address=${address}&type=${type}&direction=${direction}&idShop=${idShop}`
+    `/api/Product/searchProductOfShop?pageNum=${pageNum}&perPage=${perPage}&keyWord=${keyWord}&type=${type}&direction=${direction}&idShop=${idShop}`
   );
 };
 
@@ -125,7 +116,6 @@ export {
   DeleteProductById,
   GetImgByIdProduct,
   ChangeProduct,
-  SearchProductOfUserByAddress,
   SearchProductOfUserByType,
   CountProductOfUser,
   GetPageProduct,

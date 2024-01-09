@@ -4,18 +4,18 @@ const GetShopByUserId = (id) => {
   return axios.get(`/api/Shop/GetShop?id=${id}`);
 };
 
-const CreateShop = (config, id, name, avatar, uid) => {
+const CreateShop = (config, id, name, address, avatar, uid) => {
   return axios.post(
     `/api/Shop/CreateShop?id=${uid}`,
-    { id, name, avatar },
+    { id, name, address, avatar },
     config
   );
 };
 
-const ChangeShop = (config, name, avatar, uid) => {
+const ChangeShop = (config, name, address, avatar, uid) => {
   return axios.put(
     `/api/Shop/ChangeShopInfor?id=${uid}`,
-    { id: "", name, avatar },
+    { id: "", name, address, avatar },
     config
   );
 };

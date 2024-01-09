@@ -20,7 +20,7 @@ import { useHistory } from "react-router-dom/cjs/react-router-dom";
 
 const ModalAddCoupon = (props) => {
   const codeRegex = /^[a-zA-z0-9]+$/;
-  const worthRegex = /^[0-9%]+$/;
+  const worthRegex = /^[0-9]*%?$/;
   const describeRegex = /^[a-zA-z0-9 ]+$/;
   const [code, setCode] = useState("");
   const [quantity, setQuantity] = useState("");

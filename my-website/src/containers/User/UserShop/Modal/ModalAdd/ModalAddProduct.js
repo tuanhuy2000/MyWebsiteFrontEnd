@@ -23,9 +23,7 @@ const ModalAddProduct = (props) => {
   const [price, setPrice] = useState("");
   const [quantity, setQuantity] = useState("");
   const [information, setInformation] = useState("");
-  const [listCity, setListCity] = useState([]);
   const [listType, setListType] = useState([]);
-  const [city, setCity] = useState("Thành phố Hà Nội");
   const [type, setType] = useState("Clothes");
   const [img1, setImg1] = useState();
   const [img2, setImg2] = useState();
@@ -89,7 +87,6 @@ const ModalAddProduct = (props) => {
       nameRegex.test(name) &&
       parseInt(price) < 1000000000 &&
       parseInt(quantity) < 1000000 &&
-      city &&
       type
     ) {
       let img = [];
@@ -109,7 +106,6 @@ const ModalAddProduct = (props) => {
         price,
         quantity,
         information,
-        city,
         type,
         img,
         account.id
@@ -137,7 +133,6 @@ const ModalAddProduct = (props) => {
                 price,
                 quantity,
                 information,
-                city,
                 type,
                 img,
                 account.id
@@ -175,7 +170,6 @@ const ModalAddProduct = (props) => {
       nameRegex.test(name) &&
       parseInt(price) < 1000000000 &&
       parseInt(quantity) < 1000000 &&
-      city &&
       type
     ) {
       let img = [];
@@ -195,7 +189,6 @@ const ModalAddProduct = (props) => {
         price,
         quantity,
         information,
-        city,
         type,
         img
       );
@@ -222,7 +215,6 @@ const ModalAddProduct = (props) => {
                 price,
                 quantity,
                 information,
-                city,
                 type,
                 img
               ).then((res) => {
@@ -253,9 +245,6 @@ const ModalAddProduct = (props) => {
 
   useEffect(() => {
     let isMounted = true;
-    GetLocation().then((res) => {
-      if (isMounted) setListCity(res.data);
-    });
     GetAllTypeProduct().then((res) => {
       if (isMounted) setListType(res.data.data);
     });
@@ -270,7 +259,6 @@ const ModalAddProduct = (props) => {
       setPrice(props.data.price);
       setQuantity(props.data.quantity);
       setInformation(props.data.information);
-      setCity(props.data.address);
       setType(props.data.type);
       setImg1(props.img1);
       setImg2(props.img2);
@@ -330,19 +318,6 @@ const ModalAddProduct = (props) => {
                   value={information}
                   onChange={(event) => setInformation(event.target.value)}
                 ></textarea>
-              </div>
-              <div className="mb-3">
-                <label className="form-label">City</label>
-                <select
-                  className="form-select mb-3"
-                  aria-label=".form-select-sm example"
-                  onChange={(event) => setCity(event.target.value)}
-                  value={city}
-                >
-                  {listCity.map((item) => {
-                    return <option key={item.Id}>{item.Name}</option>;
-                  })}
-                </select>
               </div>
               <div className="mb-3">
                 <label className="form-label">Type</label>

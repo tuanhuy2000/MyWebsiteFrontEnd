@@ -7,8 +7,13 @@ import { GetShopByProductId } from "../../../services/ShopServices";
 import PayItem from "./PayItem";
 import ModalSelectVoucher from "./Modal/ModalSelectVoucher";
 import ModalSelectPaymentType from "./Modal/ModalSelectPaymentType";
+import { AddCouponToOrder } from "../../../services/OrderServices";
+import { RenewToken, getCookie } from "../../../services/Common";
+import { useDispatch } from "react-redux";
+import { handleLogoutRedux } from "../../../redux/actions/userAction";
 
 const Pay = () => {
+  const dispatch = useDispatch();
   const history = useHistory();
   const data = history.location.state.data;
   const address = history.location.state.address;
@@ -150,6 +155,71 @@ const Pay = () => {
     setListType(asyncRes[0]);
   };
 
+  const handleClickOrder = () => {
+    if (address) {
+      setSVDown(true);
+    } else {
+      toast.warning("Please select address");
+    }
+  };
+
+  const AddSingleOrderCoupon = async (oId, cId) => {
+    const config = {
+      headers: { Authorization: `Bearer ${getCookie("Token")}` },
+    };
+    let res = await AddCouponToOrder(config, oId, cId);
+    if (res.data) {
+      if (res.data.success) {
+        return true;
+      } else {
+        toast.warning(res.data.message);
+      }
+    } else {
+      if (+res === 401) {
+        RenewToken().then((nToken) => {
+          if (nToken) {
+            document.cookie = "Token=" + nToken + ";";
+            const config2 = {
+              headers: { Authorization: `Bearer ${nToken}` },
+            };
+            AddCouponToOrder(config2, oId, cId).then((res) => {
+              if (res.data) {
+                if (res.data.success) {
+                  return true;
+                } else {
+                  toast.warning(res.data.message);
+                }
+              }
+            });
+          } else {
+            toast.error("PLease login to continue");
+            dispatch(handleLogoutRedux());
+            history.push(`/login`);
+          }
+        });
+      } else {
+        toast.error("Unknow Error");
+      }
+    }
+    return false;
+  };
+
+  const AddOrderCoupon = async (oId) => {
+    if (shippingVoucher) {
+      const response1 = await AddSingleOrderCoupon(oId, shippingVoucher.id);
+      if (!response1) {
+        return false;
+      }
+    }
+    if (discountVoucher) {
+      const response2 = await AddSingleOrderCoupon(oId, discountVoucher.id);
+      if (!response2) {
+        return false;
+      }
+    }
+    return true;
+  };
+
   useEffect(() => {
     if (discountVoucher) {
       if (
@@ -240,6 +310,13 @@ const Pay = () => {
                   changeDiscount={ChangeTotalDisCount}
                   changeTotalShip={ChangeTotalShip}
                   changeShipOff={ChangeTotalShipOff}
+                  //
+                  address={address}
+                  paymentType={paymentType}
+                  total={total}
+                  saleOff={saleOff}
+                  AddOrderCoupon={AddOrderCoupon}
+                  //
                   sVDown={sVDown}
                   setSVDown={setSVDown}
                 />
@@ -357,7 +434,7 @@ const Pay = () => {
         </p>
         <button
           className="btn-order col-4 col-sm-3"
-          onClick={() => setSVDown(true)}
+          onClick={() => handleClickOrder()}
         >
           ORDER
         </button>

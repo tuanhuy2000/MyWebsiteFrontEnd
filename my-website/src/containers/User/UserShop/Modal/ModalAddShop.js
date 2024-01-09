@@ -3,7 +3,11 @@ import { Button, Modal } from "react-bootstrap";
 import default_avatar from "../../../../assets/images/default-avatar.jpg";
 import { toast } from "react-toastify";
 import "./ModalAddShop.scss";
-import { RenewToken, getCookie } from "../../../../services/Common";
+import {
+  GetLocation,
+  RenewToken,
+  getCookie,
+} from "../../../../services/Common";
 import { ChangeShop, CreateShop } from "../../../../services/ShopServices";
 import { useHistory } from "react-router-dom/cjs/react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
@@ -13,10 +17,12 @@ import { useEffect } from "react";
 const ModalAddShop = (props) => {
   const account = useSelector((state) => state.user.account);
   const [name, setName] = useState("");
+  const [address, setAddress] = useState("Thành phố Hà Nội");
   const [img, setImg] = useState();
   const history = useHistory();
   const nameRegex = /^[a-zA-z0-9 ]+$/;
   const dispatch = useDispatch();
+  const [listCity, setListCity] = useState([]);
 
   const ConvertAvatarDefault = () => {
     var canvas = document.createElement("canvas");
@@ -62,7 +68,14 @@ const ModalAddShop = (props) => {
       avatar = img;
     }
     if (nameRegex.test(name)) {
-      let res = await CreateShop(config, random_uuid, name, avatar, account.id);
+      let res = await CreateShop(
+        config,
+        random_uuid,
+        name,
+        address,
+        avatar,
+        account.id
+      );
       if (res.data) {
         if (res.data.success) {
           toast.success(res.data.message);
@@ -78,7 +91,60 @@ const ModalAddShop = (props) => {
               const config2 = {
                 headers: { Authorization: `Bearer ${token}` },
               };
-              CreateShop(config2, random_uuid, name, avatar, account.id).then(
+              CreateShop(
+                config2,
+                random_uuid,
+                name,
+                address,
+                avatar,
+                account.id
+              ).then((res) => {
+                if (res.data) {
+                  if (res.data.success) {
+                    toast.success(res.data.message);
+                    props.handleClose();
+                  } else {
+                    toast.warning(res.data.message);
+                  }
+                }
+              });
+            } else {
+              toast.error("PLease login to continue");
+              dispatch(handleLogoutRedux());
+              history.push(`/login`);
+            }
+          });
+        } else {
+          toast.error("Error");
+        }
+      }
+    } else {
+      toast.warning("Missing value or wrong format");
+    }
+  };
+
+  const handleChangeShop = async () => {
+    const config = {
+      headers: { Authorization: `Bearer ${getCookie("Token")}` },
+    };
+    if (nameRegex.test(name)) {
+      let res = await ChangeShop(config, name, address, img, account.id);
+      if (res.data) {
+        if (res.data.success) {
+          toast.success(res.data.message);
+          props.handleClose();
+        } else {
+          toast.warning(res.data.message);
+        }
+      } else {
+        if (+res === 401) {
+          RenewToken().then((token) => {
+            if (token) {
+              document.cookie = "Token=" + token + ";";
+              const config2 = {
+                headers: { Authorization: `Bearer ${token}` },
+              };
+              ChangeShop(config2, name, address, img, account.id).then(
                 (res) => {
                   if (res.data) {
                     if (res.data.success) {
@@ -105,61 +171,26 @@ const ModalAddShop = (props) => {
     }
   };
 
-  const handleChangeShop = async () => {
-    const config = {
-      headers: { Authorization: `Bearer ${getCookie("Token")}` },
-    };
-    if (nameRegex.test(name)) {
-      let res = await ChangeShop(config, name, img, account.id);
-      if (res.data) {
-        if (res.data.success) {
-          toast.success(res.data.message);
-          props.handleClose();
-        } else {
-          toast.warning(res.data.message);
-        }
-      } else {
-        if (+res === 401) {
-          RenewToken().then((token) => {
-            if (token) {
-              document.cookie = "Token=" + token + ";";
-              const config2 = {
-                headers: { Authorization: `Bearer ${token}` },
-              };
-              ChangeShop(config2, name, img, account.id).then((res) => {
-                if (res.data) {
-                  if (res.data.success) {
-                    toast.success(res.data.message);
-                    props.handleClose();
-                  } else {
-                    toast.warning(res.data.message);
-                  }
-                }
-              });
-            } else {
-              toast.error("PLease login to continue");
-              dispatch(handleLogoutRedux());
-              history.push(`/login`);
-            }
-          });
-        } else {
-          toast.error("Error");
-        }
-      }
-    } else {
-      toast.warning("Missing value or wrong format");
-    }
-  };
-
   useEffect(() => {
     if (props.type === "change" && props.name && props.avatar) {
       setImg(props.avatar);
       setName(props.name);
+      setAddress(props.address);
     } else {
       setName("");
       setImg(ConvertAvatarDefault());
     }
   }, [props]);
+
+  useEffect(() => {
+    let isMounted = true;
+    GetLocation().then((res) => {
+      if (isMounted) setListCity(res.data);
+    });
+    return () => {
+      isMounted = false;
+    };
+  }, []);
 
   return (
     <>
@@ -198,6 +229,19 @@ const ModalAddShop = (props) => {
                 />
               </div>
             </form>
+            <div className="mb-3">
+              <label className="form-label">City</label>
+              <select
+                className="form-select mb-3"
+                aria-label=".form-select-sm example"
+                onChange={(event) => setAddress(event.target.value)}
+                value={address}
+              >
+                {listCity.map((item) => {
+                  return <option key={item.Id}>{item.Name}</option>;
+                })}
+              </select>
+            </div>
           </div>
         </Modal.Body>
         <Modal.Footer>

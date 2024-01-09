@@ -3,11 +3,9 @@ import ReactPaginate from "react-paginate";
 import "./TableContent.scss";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import { GetLocation } from "../../../../services/Common";
 import {
   GetAllTypeProduct,
   GetImgByIdProduct,
-  SearchProductOfUserByAddress,
   SearchProductOfUserByName,
   SearchProductOfUserByType,
   getPageProductByIdUser,
@@ -30,15 +28,8 @@ const TableProduct = (props) => {
   const [img2, setImg2] = useState();
   const [img3, setImg3] = useState();
   const [col, setCol] = useState("Name");
-  const [listCity, setListCity] = useState([]);
   const [listType, setListType] = useState([]);
-  const [city, setCity] = useState("");
   const [type, setType] = useState("");
-
-  const GetCity = async () => {
-    let res = await GetLocation();
-    setListCity(res.data);
-  };
 
   const GetAllType = async () => {
     let res = await GetAllTypeProduct();
@@ -81,11 +72,6 @@ const TableProduct = (props) => {
       setCurrentPage(event.selected + 1);
       return;
     }
-    if (city) {
-      handleChangeCity(+event.selected + 1);
-      setCurrentPage(event.selected + 1);
-      return;
-    }
     if (type) {
       handleChangeType(+event.selected + 1);
       setCurrentPage(event.selected + 1);
@@ -117,7 +103,6 @@ const TableProduct = (props) => {
     setDirection(tmp);
     setCol(col);
     setKeyword("");
-    setCity("");
     setType("");
   };
 
@@ -154,20 +139,6 @@ const TableProduct = (props) => {
     props.UpdateAfterDelete();
   };
 
-  const handleChangeCity = async (pageNum) => {
-    let res = await SearchProductOfUserByAddress(
-      pageNum,
-      perPage,
-      direction,
-      city,
-      account.id
-    );
-    if (res.data) {
-      setTotalPages(res.data.data.totalPages);
-      setListProduct(res.data.data.data);
-    }
-  };
-
   const handleChangeType = async (pageNum) => {
     let res = await SearchProductOfUserByType(
       pageNum,
@@ -183,24 +154,17 @@ const TableProduct = (props) => {
   };
 
   useEffect(() => {
-    if (city) {
-      handleChangeCity(1);
-      setType("");
-      setKeyword("");
-    }
     if (type) {
       handleChangeType(1);
-      setCity("");
       setKeyword("");
     }
-  }, [city, type]);
+  }, [type]);
 
   useEffect(() => {
     GetPageProduct(col, curentPage, perPage, direction);
   }, [direction, props.update]);
 
   useEffect(() => {
-    GetCity();
     GetAllType();
   }, []);
 
@@ -219,18 +183,6 @@ const TableProduct = (props) => {
             <span onClick={() => handleSearch(1)}>
               <i className="fas fa-search"></i>
             </span>
-          </div>
-          <div className="mb-3 col-12 col-sm-4">
-            <label className="form-label">City</label>
-            <select
-              className="form-select mb-3"
-              aria-label=".form-select-sm example"
-              onChange={(event) => setCity(event.target.value)}
-            >
-              {listCity.map((item) => {
-                return <option key={item.Id}>{item.Name}</option>;
-              })}
-            </select>
           </div>
           <div className="mb-3 col-12 col-sm-4">
             <label className="form-label">Type</label>
@@ -285,7 +237,6 @@ const TableProduct = (props) => {
                   </th>
                   <th>Quantity</th>
                   <th>Information</th>
-                  <th>Address</th>
                   <th>Type</th>
                   <th>Actions</th>
                 </tr>
@@ -303,7 +254,6 @@ const TableProduct = (props) => {
                         <td>
                           <div className="infor-p">{item.information}</div>
                         </td>
-                        <td>{item.address}</td>
                         <td>{item.type}</td>
                         <td>
                           <button
@@ -327,12 +277,12 @@ const TableProduct = (props) => {
           </div>
           <ReactPaginate
             breakLabel="..."
-            nextLabel="next"
+            nextLabel=">"
             onPageChange={handlePageClick}
             pageRangeDisplayed={1}
             marginPagesDisplayed={1}
             pageCount={totalPages}
-            previousLabel="previous"
+            previousLabel="<"
             pageClassName="page-item"
             pageLinkClassName="page-link"
             previousClassName="page-item"

@@ -65,7 +65,7 @@ const Cart = () => {
       GetCost();
     } else {
       listBuy.map((i) => {
-        if (i.id == item.id) {
+        if (i.id === item.id) {
           let tmpList = listBuy;
           const index = tmpList.indexOf(i);
           if (index > -1) {
@@ -89,7 +89,7 @@ const Cart = () => {
 
   const ChangeQuantity = (item) => {
     listBuy.map((i) => {
-      if (i.id == item.id) {
+      if (i.id === item.id) {
         let tmpList = listBuy;
         const index = tmpList.indexOf(i);
         if (index > -1) {
@@ -103,7 +103,7 @@ const Cart = () => {
     });
   };
 
-  const handleSelectALl = (event) => {
+  const handleSelectAll = (event) => {
     if (event.target.checked) {
       list.map((item) => {
         listBuy.map((i) => {
@@ -180,7 +180,7 @@ const Cart = () => {
           <div className="d-flex">
             <input
               type="checkbox"
-              onClick={(event) => handleSelectALl(event)}
+              onClick={(event) => handleSelectAll(event)}
             />
             <p>Select all</p>
           </div>
