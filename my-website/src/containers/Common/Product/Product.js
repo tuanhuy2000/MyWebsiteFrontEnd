@@ -13,6 +13,7 @@ import { AddToCart } from "../../../services/CartServices";
 import { useDispatch, useSelector } from "react-redux";
 import { RenewToken, getCookie } from "../../../services/Common";
 import { handleLogoutRedux } from "../../../redux/actions/userAction";
+import { CheckBeforeOrder } from "../../../services/OrderServices";
 
 const Product = () => {
   const history = useHistory();
@@ -126,12 +127,52 @@ const Product = () => {
     }
   }, []);
 
-  const handleClickBuyNow = () => {
-    data.quantity = quantity;
-    history.push({
-      pathname: `/pay`,
-      state: { data: [data] },
-    });
+  const handleClickBuyNow = async () => {
+    const config = {
+      headers: { Authorization: `Bearer ${getCookie("Token")}` },
+    };
+    let res = await CheckBeforeOrder(config, account.id, data.id);
+    if (res.data) {
+      if (res.data.success) {
+        data.quantity = quantity;
+        history.push({
+          pathname: `/pay`,
+          state: { data: [data] },
+        });
+      } else {
+        toast.warning(res.data.message);
+      }
+    } else {
+      if (+res === 401) {
+        RenewToken().then((token) => {
+          if (token) {
+            document.cookie = "Token=" + token + ";";
+            const config2 = {
+              headers: { Authorization: `Bearer ${token}` },
+            };
+            CheckBeforeOrder(config2, account.id, data.id).then((res) => {
+              if (res.data) {
+                if (res.data.success) {
+                  data.quantity = quantity;
+                  history.push({
+                    pathname: `/pay`,
+                    state: { data: [data] },
+                  });
+                } else {
+                  toast.warning(res.data.message);
+                }
+              }
+            });
+          } else {
+            toast.error("PLease login to continue");
+            dispatch(handleLogoutRedux());
+            history.push(`/login`);
+          }
+        });
+      } else {
+        toast.error("Error");
+      }
+    }
   };
 
   if (data) {

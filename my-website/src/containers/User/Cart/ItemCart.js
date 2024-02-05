@@ -31,50 +31,40 @@ const ItemCart = (props) => {
     }
   };
 
-  const handleChangeQuantity = async (event) => {
-    setQuantity(event.target.value);
+  const ChangeQuantityInCart = async (quantity) => {
     const config = {
       headers: { Authorization: `Bearer ${getCookie("Token")}` },
     };
-    let res = await ChangeQuantity(
-      config,
-      account.id,
-      props.data.id,
-      event.target.value
-    );
+    let res = await ChangeQuantity(config, account.id, props.data.id, quantity);
     if (res.data) {
       if (res.data.success) {
         props.func();
-        props.data.quantity = event.target.value;
+        props.data.quantity = quantity;
         props.change(props.data);
       } else {
         toast.warning(res.data.message);
       }
     } else {
       if (+res === 401) {
-        setQuantity(event.target.value);
         RenewToken().then((token) => {
           if (token) {
             document.cookie = "Token=" + token + ";";
             const config2 = {
               headers: { Authorization: `Bearer ${token}` },
             };
-            ChangeQuantity(
-              config2,
-              account.id,
-              props.data.id,
-              event.target.value
-            ).then((res) => {
-              if (res.data) {
-                if (res.data.success) {
-                  props.func();
-                  props.data.quantity = event.target.value;
-                  props.change(props.data);
-                } else {
-                  toast.warning(res.data.message);
+            ChangeQuantity(config2, account.id, props.data.id, quantity).then(
+              (res) => {
+                if (res.data) {
+                  if (res.data.success) {
+                    props.func();
+                    props.data.quantity = quantity;
+                    props.change(props.data);
+                  } else {
+                    toast.warning(res.data.message);
+                  }
                 }
               }
-            });
+            );
           } else {
             toast.error("PLease login to continue");
             dispatch(handleLogoutRedux());
@@ -84,6 +74,25 @@ const ItemCart = (props) => {
       } else {
         toast.error("Error");
       }
+    }
+  };
+
+  const handleChangeQuantity = async (event) => {
+    if (event.target.value) {
+      if (event.target.value < 1) {
+        setQuantity(0);
+        ChangeQuantityInCart(0);
+      } else {
+        if (event.target.value > max) {
+          setQuantity(max);
+          ChangeQuantityInCart(max);
+        } else {
+          setQuantity(event.target.value);
+          ChangeQuantityInCart(event.target.value);
+        }
+      }
+    } else {
+      return;
     }
   };
 
@@ -156,7 +165,7 @@ const ItemCart = (props) => {
         <div className="col-1">
           <input
             type="number"
-            min="1"
+            min="0"
             max={max}
             value={quantity}
             onChange={(event) => handleChangeQuantity(event)}
@@ -164,9 +173,7 @@ const ItemCart = (props) => {
         </div>
         <div className="col-2 total">
           <span>
-            {new Intl.NumberFormat("de-DE").format(
-              props.data.price * props.data.quantity
-            )}{" "}
+            {new Intl.NumberFormat("de-DE").format(props.data.price * quantity)}{" "}
             ₫
           </span>
         </div>

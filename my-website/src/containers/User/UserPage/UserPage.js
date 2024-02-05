@@ -5,6 +5,7 @@ import ChangePass from "../ChangePass/ChangePass";
 import UserShop from "../UserShop/UserShop";
 import { useSelector } from "react-redux";
 import AdminCoupon from "../../Admin/AdminCoupon/AdminCoupon";
+import UserOrder from "../UserOrder/UserOrder";
 
 const UserPage = () => {
   const [content, setContent] = useState();
@@ -42,6 +43,12 @@ const UserPage = () => {
               id="user-shop"
             >
               {account.name}'s Shop
+            </li>
+            <li
+              onClick={(event) => handleClickChangePage(event, <UserOrder />)}
+              id="user-order"
+            >
+              Order
             </li>
             {account.role === "AdminRole" && (
               <li

@@ -9,7 +9,11 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 import { handleLogoutRedux } from "../../../../redux/actions/userAction";
-import { RenewToken, getCookie } from "../../../../services/Common";
+import {
+  AnalysisAddress,
+  RenewToken,
+  getCookie,
+} from "../../../../services/Common";
 
 const ChooseAddress = () => {
   const history = useHistory();
@@ -53,13 +57,6 @@ const ChooseAddress = () => {
         });
       }
     }
-  };
-
-  const AnalysisAddress = (add) => {
-    let tmp = add.split(",", 3).join(",").length;
-    let fsub = add.slice(tmp + 2, add.length);
-    let lsub = add.slice(0, tmp);
-    return fsub + "\n" + lsub;
   };
 
   const handleDeleteAddress = async (item) => {

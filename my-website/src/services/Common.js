@@ -53,4 +53,18 @@ const ConvertDateInput = (date) => {
   return tmp.getFullYear().toString() + "-" + month + "-" + day;
 };
 
-export { getCookie, RenewToken, GetLocation, ConvertDate, ConvertDateInput };
+const AnalysisAddress = (add) => {
+  let tmp = add.split(",", 3).join(",").length;
+  let fsub = add.slice(tmp + 2, add.length);
+  let lsub = add.slice(0, tmp);
+  return fsub + "\n" + lsub;
+};
+
+export {
+  getCookie,
+  RenewToken,
+  GetLocation,
+  ConvertDate,
+  ConvertDateInput,
+  AnalysisAddress,
+};

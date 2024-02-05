@@ -694,13 +694,13 @@ const TableCoupon = (props) => {
                         <td>{item.productType}</td>
                         <td>
                           <button
-                            className="btn btn-warning mx-3"
+                            className="btn btn-warning my-1"
                             onClick={() => handleClickChangeBtn(item)}
                           >
                             Change
                           </button>
                           <button
-                            className="btn btn-danger"
+                            className="btn btn-danger my-1"
                             onClick={() => handleClickDeleteBtn(item)}
                           >
                             Delete

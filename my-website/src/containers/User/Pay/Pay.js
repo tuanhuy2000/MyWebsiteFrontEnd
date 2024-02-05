@@ -8,7 +8,11 @@ import PayItem from "./PayItem";
 import ModalSelectVoucher from "./Modal/ModalSelectVoucher";
 import ModalSelectPaymentType from "./Modal/ModalSelectPaymentType";
 import { AddCouponToOrder } from "../../../services/OrderServices";
-import { RenewToken, getCookie } from "../../../services/Common";
+import {
+  AnalysisAddress,
+  RenewToken,
+  getCookie,
+} from "../../../services/Common";
 import { useDispatch } from "react-redux";
 import { handleLogoutRedux } from "../../../redux/actions/userAction";
 
@@ -61,13 +65,6 @@ const Pay = () => {
 
   const ChangeTotalShipOff = (sub, add) => {
     setShipOff((shipOff) => shipOff - sub + add);
-  };
-
-  const AnalysisAddress = (add) => {
-    let tmp = add.split(",", 3).join(",").length;
-    let fsub = add.slice(tmp + 2, add.length);
-    let lsub = add.slice(0, tmp);
-    return fsub + "\n" + lsub;
   };
 
   const GetListShop = async () => {
@@ -433,6 +430,7 @@ const Pay = () => {
           </b>
         </p>
         <button
+          //disabled={sVDown ? true : false}
           className="btn-order col-4 col-sm-3"
           onClick={() => handleClickOrder()}
         >

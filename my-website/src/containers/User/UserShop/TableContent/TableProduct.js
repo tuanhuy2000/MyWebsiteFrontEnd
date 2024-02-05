@@ -257,13 +257,13 @@ const TableProduct = (props) => {
                         <td>{item.type}</td>
                         <td>
                           <button
-                            className="btn btn-warning"
+                            className="btn btn-warning my-1"
                             onClick={() => handleClickChangeBtn(item)}
                           >
                             Change
                           </button>
                           <button
-                            className="btn btn-danger"
+                            className="btn btn-danger my-1"
                             onClick={() => handleClickDeleteBtn(item)}
                           >
                             Delete

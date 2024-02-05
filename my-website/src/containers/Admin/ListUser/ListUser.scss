@@ -26,11 +26,13 @@
       .sort-header {
         display: flex;
         justify-content: space-between;
-
         i {
           padding: 0 2px;
           cursor: pointer;
         }
+      }
+      td {
+        vertical-align: middle;
       }
     }
   }

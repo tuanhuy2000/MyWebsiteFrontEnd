@@ -8,6 +8,7 @@ import { useHistory } from "react-router-dom/cjs/react-router-dom";
 import "./Cart.scss";
 import ItemCart from "./ItemCart";
 import { Alert } from "react-bootstrap";
+import { CheckBeforeOrder } from "../../../services/OrderServices";
 
 const Cart = () => {
   const history = useHistory();
@@ -131,6 +132,44 @@ const Cart = () => {
     }
   };
 
+  const handleClickBuy = async () => {
+    RenewToken().then(async (nToken) => {
+      if (nToken) {
+        document.cookie = "Token=" + nToken + ";";
+        const config = {
+          headers: { Authorization: `Bearer ${nToken}` },
+        };
+        let result = true;
+        const asyncRes = await Promise.all(
+          listBuy.map(async (item) => {
+            let res = await CheckBeforeOrder(config, account.id, item.id);
+            if (res.data) {
+              if (res.data.success) {
+              } else {
+                result = false;
+              }
+            } else {
+              toast.error("Error");
+              result = false;
+            }
+          })
+        );
+        if (result) {
+          history.push({
+            pathname: `/pay`,
+            state: { data: listBuy },
+          });
+        } else {
+          toast.warning("Can't buy products from my own store");
+        }
+      } else {
+        toast.error("PLease login to continue");
+        dispatch(handleLogoutRedux());
+        history.push(`/login`);
+      }
+    });
+  };
+
   useEffect(() => {
     GetProduct();
   }, []);
@@ -189,12 +228,13 @@ const Cart = () => {
             <b>{new Intl.NumberFormat("de-DE").format(total)}₫</b>
           </p>
           <button
-            onClick={() =>
-              history.push({
-                pathname: `/pay`,
-                state: { data: listBuy },
-              })
-            }
+            // onClick={() =>
+            //   history.push({
+            //     pathname: `/pay`,
+            //     state: { data: listBuy },
+            //   })
+            // }
+            onClick={() => handleClickBuy()}
             disabled={listBuy.length > 0 ? false : true}
             className={listBuy.length > 0 ? "btn-enable" : "btn-disable"}
           >

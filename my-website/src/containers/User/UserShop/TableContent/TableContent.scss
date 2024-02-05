@@ -35,6 +35,12 @@
         overflow-x: auto;
         overflow-y: auto;
       }
+      td {
+        vertical-align: middle;
+      }
+    }
+    .group-radio {
+      gap: 20px;
     }
   }
   .pagination {

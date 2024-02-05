@@ -1,4 +1,4 @@
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import "./UserShop.scss";
 import { Alert } from "react-bootstrap";
 import { GetShopByUserId } from "../../../services/ShopServices";
@@ -14,14 +14,21 @@ import ModalAddProduct from "./Modal/ModalAdd/ModalAddProduct";
 import ModalAddCoupon from "./Modal/ModalAdd/ModalAddCoupon";
 import { CountProductOfUser } from "../../../services/ProductServices";
 import { CountCouponOfUser } from "../../../services/CouponServices";
+import { CountOrderOfShop } from "../../../services/OrderServices";
+import { useHistory } from "react-router-dom";
+import { RenewToken, getCookie } from "../../../services/Common";
+import { handleLogoutRedux } from "../../../redux/actions/userAction";
 
 const UserShop = () => {
   const account = useSelector((state) => state.user.account);
+  const history = useHistory();
+  const dispatch = useDispatch();
   const [isShow, setIsShow] = useState(false);
   const [isShowDelete, setIsShowDelete] = useState(false);
   const [isShowAddProduct, setIsShowAddProduct] = useState(false);
   const [isShowAddCoupon, setIsShowAddCoupon] = useState(false);
   const [dataDelete, setDataDelete] = useState({});
+  const [idShop, setIDShop] = useState("");
   const [name, setName] = useState("");
   const [address, setAddress] = useState("");
   const [avatar, setAvatar] = useState("");
@@ -30,6 +37,7 @@ const UserShop = () => {
   const [update, setUpdate] = useState(false);
   const [countProduct, setCountProduct] = useState(0);
   const [countCoupon, setCountCoupon] = useState(0);
+  const [countOrder, setCountOrder] = useState(0);
 
   const handleClose = () => {
     setIsShow(false);
@@ -87,10 +95,12 @@ const UserShop = () => {
     GetShopByUserId(account.id).then((res) => {
       if (res.data) {
         if (res.data.success) {
+          setIDShop(res.data.data.id);
           setName(res.data.data.name);
           setAddress(res.data.data.address);
           setAvatar(res.data.data.avatar);
         } else {
+          setIDShop("");
           setName("");
           setAddress("");
           setAvatar("");
@@ -124,6 +134,51 @@ const UserShop = () => {
       }
     });
   }, [isShowAddCoupon]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const config = {
+        headers: { Authorization: `Bearer ${getCookie("Token")}` },
+      };
+      let res = await CountOrderOfShop(config, idShop);
+      if (res.data) {
+        if (res.data.success) {
+          setCountOrder(res.data.data);
+        } else {
+          toast.warning(res.data.message);
+        }
+      } else {
+        if (+res === 401) {
+          RenewToken().then((token) => {
+            if (token) {
+              document.cookie = "Token=" + token + ";";
+              const config2 = {
+                headers: { Authorization: `Bearer ${token}` },
+              };
+              CountOrderOfShop(config2, idShop).then((res) => {
+                if (res.data) {
+                  if (res.data.success) {
+                    setCountOrder(res.data.data);
+                  } else {
+                    toast.warning(res.data.message);
+                  }
+                }
+              });
+            } else {
+              toast.error("PLease login to continue");
+              dispatch(handleLogoutRedux());
+              history.push(`/login`);
+            }
+          });
+        } else {
+          toast.error("Error");
+        }
+      }
+    };
+    if (idShop) {
+      fetchData();
+    }
+  }, [idShop]);
 
   if (name && avatar) {
     return (
@@ -182,9 +237,9 @@ const UserShop = () => {
             </div>
             <div
               className="col-4 total-count-order"
-              onClick={() => SetContentTable(<TableOrder />)}
+              onClick={() => SetContentTable(<TableOrder idShop={idShop} />)}
             >
-              ORDER
+              {countOrder} ORDER
             </div>
           </div>
           <div className="col-12">{contentTable}</div>
