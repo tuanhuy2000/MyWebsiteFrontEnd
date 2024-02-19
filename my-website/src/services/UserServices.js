@@ -1,7 +1,11 @@
 import axios from "../services/customAxios";
 
-const signin = (id, name, phoneNumber, email, userName, password) => {
-  return axios.post(`/api/User/Signin`, {
+const getOTP = (email) => {
+  return axios.post(`/api/User/GetOTP?email=${email}`, {});
+};
+
+const signin = (id, name, phoneNumber, email, userName, password, otp) => {
+  return axios.post(`/api/User/Signin?otp=${otp}`, {
     id,
     name,
     phoneNumber,
@@ -113,6 +117,7 @@ const DeleteAddress = (config, id) => {
 };
 
 export {
+  getOTP,
   signin,
   login,
   getRefreshToken,

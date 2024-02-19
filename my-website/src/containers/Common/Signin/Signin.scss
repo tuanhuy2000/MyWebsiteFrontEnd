@@ -2,7 +2,7 @@
   height: 100vh;
   background: linear-gradient(#ee4d2d 0%, #ff7337 100%);
   .signin-container {
-    height: 670px;
+    height: 680px;
     position: absolute;
     //margin: 0 auto;
     border-radius: 10px;
@@ -75,8 +75,20 @@
         color: white;
         font-size: 30px;
       }
+      .otp-input {
+        justify-content: center;
+        .input-custom {
+          width: 100% !important;
+          height: 100%;
+          margin: 0 0.3vw;
+          border-radius: 4px;
+          border: 1px solid rgba(0, 0, 0, 0.3);
+          font-size: 3vh;
+        }
+      }
       .back {
         position: relative;
+        text-align: right;
         .btn-back {
           width: 20%;
           height: 35px;

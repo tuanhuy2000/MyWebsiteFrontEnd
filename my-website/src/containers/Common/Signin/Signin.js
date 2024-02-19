@@ -1,8 +1,9 @@
 import "./Signin.scss";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom/cjs/react-router-dom";
 import { toast } from "react-toastify";
-import { signin } from "../../../services/UserServices";
+import { getOTP, signin } from "../../../services/UserServices";
+import OtpInput from "react-otp-input";
 
 const Signin = () => {
   const usernameRegex = /^[a-zA-z0-9_]+$/;
@@ -18,8 +19,44 @@ const Signin = () => {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [show, setShow] = useState(false);
+  const [otp, setOtp] = useState();
+  const [count, setCount] = useState({ s: 120 });
+  const [showOtp, setShowOtp] = useState(false);
 
   const Signin = async (id, name, phoneNumber, email, userName, password) => {
+    let res = await signin(
+      id,
+      name,
+      phoneNumber,
+      email,
+      userName,
+      password,
+      otp
+    );
+    if (res.data) {
+      if (res.data.success) {
+        history.push(`/`);
+      } else {
+        toast.warning(res.data.message);
+      }
+    } else {
+      toast.error("Error");
+    }
+  };
+
+  const getOtp = async (email) => {
+    let res = await getOTP(email);
+    if (res.data) {
+      if (res.data.success) {
+      } else {
+        toast.warning(res.data.message);
+      }
+    } else {
+      toast.error("Error");
+    }
+  };
+
+  const handleSigninButton = () => {
     if (
       nameRegex.test(name) &&
       phoneRegex.test(phone) &&
@@ -29,22 +66,13 @@ const Signin = () => {
       passRegex.test(confirmPassword)
     ) {
       if (password === confirmPassword) {
-        let res = await signin(
-          id,
-          name,
-          phoneNumber,
-          email,
-          userName,
-          password
-        );
-        if (res.data) {
-          if (res.data.success) {
-            history.push(`/`);
-          } else {
-            toast.warning(res.data.message);
-          }
+        if (showOtp) {
+          const { v4: uuidv4 } = require("uuid");
+          const random_uuid = uuidv4();
+          Signin(random_uuid, name, phone, email, username, password);
         } else {
-          toast.error("Error");
+          setShowOtp(!showOtp);
+          getOtp(email);
         }
       } else {
         toast.warning("Confirm password wrong !!!");
@@ -54,11 +82,28 @@ const Signin = () => {
     }
   };
 
-  const handleSigninButton = () => {
-    const { v4: uuidv4 } = require("uuid");
-    const random_uuid = uuidv4();
-    Signin(random_uuid, name, phone, email, username, password);
+  const startTimer = () => {
+    let myInterval = setInterval(() => {
+      setCount((count) => {
+        const updatedTime = { ...count };
+        if (count.s > 0) {
+          updatedTime.s--;
+        }
+        if (count.s === 0) {
+          clearInterval(myInterval);
+          setShowOtp(false);
+          setCount({ s: 120 });
+        }
+        return updatedTime;
+      });
+    }, 1000);
   };
+
+  useEffect(() => {
+    if (showOtp) {
+      startTimer();
+    }
+  }, [showOtp]);
 
   return (
     <div className="signin-background">
@@ -135,22 +180,39 @@ const Signin = () => {
               </span>
             </div>
           </div>
+          {showOtp ? (
+            <div>
+              <label>OTP:</label>
+              <div className="otp-input d-flex">
+                <OtpInput
+                  value={otp}
+                  onChange={setOtp}
+                  numInputs={6}
+                  separator={<span>-</span>}
+                  inputStyle={"input-custom"}
+                />
+              </div>
+              <div>Your otp will expire after {count.s} seconds</div>
+            </div>
+          ) : (
+            ""
+          )}
           <div className="col-12">
             <button
               type="button"
               className="btn-signin"
               onClick={() => handleSigninButton()}
             >
-              Sign in
+              {showOtp ? "Sign in" : "Get OTP"}
             </button>
           </div>
-          <div className="col-12 text-center mt-3">
+          {/* <div className="col-12 text-center mt-3">
             <span className="text-orther-signin">Or signin with: </span>
           </div>
           <div className="col-12 social-signin">
             <i className="fab fa-google-plus-g google"></i>
             <i className="fab fa-facebook-f facebook"></i>
-          </div>
+          </div> */}
           <div className="col-12 back">
             <button
               type="button"
