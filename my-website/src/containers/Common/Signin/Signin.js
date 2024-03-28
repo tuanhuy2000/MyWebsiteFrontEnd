@@ -9,7 +9,8 @@ const Signin = () => {
   const usernameRegex = /^[a-zA-z0-9_]+$/;
   const passRegex = /^(?=.{6,})(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9])(?=.*[\W])/;
   const emailRegex = /^[\w-]+(\.[\w-]+)*@[\w-]+(\.[\w-]+)+$/;
-  const nameRegex = /^[a-zA-z]+$/;
+  //const nameRegex = /^[a-zA-z]+$/;
+  const nameRegex = /^[aAàÀảẢãÃáÁạẠăĂằẰẳẲẵẴắẮặẶâÂầẦẩẨẫẪấẤậẬbBcCdDđĐeEèÈẻẺẽẼéÉẹẸêÊềỀểỂễỄếẾệỆfFgGhHiIìÌỉỈĩĨíÍịỊjJkKlLmMnNoOòÒỏỎõÕóÓọỌôÔồỒổỔỗỖốỐộỘơƠờỜởỞỡỠớỚợỢpPqQrRsStTuUùÙủỦũŨúÚụỤưƯừỪửỬữỮứỨựỰvVwWxXyYỳỲỷỶỹỸýÝỵỴzZ ]+$/;
   const phoneRegex = /^(0[3|5|7|8|9])+([0-9]{8})+$/;
   const history = useHistory();
   const [name, setName] = useState("");
@@ -22,6 +23,72 @@ const Signin = () => {
   const [otp, setOtp] = useState();
   const [count, setCount] = useState({ s: 120 });
   const [showOtp, setShowOtp] = useState(false);
+
+  const HandleChangeName = (event) => {
+    setName(event.target.value)
+    if (nameRegex.test(event.target.value)) {
+      var element = document.getElementById(event.target.id);
+      element.classList.remove("wrong-format");
+    } else {
+      var element = document.getElementById(event.target.id);
+      element.classList.add("wrong-format");
+    }
+  }
+
+  const HandleChangePhone = (event) => {
+    setPhone(event.target.value)
+    if (phoneRegex.test(event.target.value)) {
+      var element = document.getElementById(event.target.id);
+      element.classList.remove("wrong-format");
+    } else {
+      var element = document.getElementById(event.target.id);
+      element.classList.add("wrong-format");
+    }
+  }
+
+  const HandleChangeEmail = (event) => {
+    setEmail(event.target.value)
+    if (emailRegex.test(event.target.value)) {
+      var element = document.getElementById(event.target.id);
+      element.classList.remove("wrong-format");
+    } else {
+      var element = document.getElementById(event.target.id);
+      element.classList.add("wrong-format");
+    }
+  }
+
+  const HandleChangeUserName = (event) => {
+    setUsername(event.target.value)
+    if (usernameRegex.test(event.target.value)) {
+      var element = document.getElementById(event.target.id);
+      element.classList.remove("wrong-format");
+    } else {
+      var element = document.getElementById(event.target.id);
+      element.classList.add("wrong-format");
+    }
+  }
+
+  const HandleChangePassWord = (event) => {
+    setPassword(event.target.value)
+    if (passRegex.test(event.target.value)) {
+      var element = document.getElementById(event.target.id);
+      element.classList.remove("wrong-format");
+    } else {
+      var element = document.getElementById(event.target.id);
+      element.classList.add("wrong-format");
+    }
+  }
+
+  const HandleChangeConfirmPassWord = (event) => {
+    setConfirmPassword(event.target.value)
+    if (passRegex.test(event.target.value)) {
+      var element = document.getElementById(event.target.id);
+      element.classList.remove("wrong-format");
+    } else {
+      var element = document.getElementById(event.target.id);
+      element.classList.add("wrong-format");
+    }
+  }
 
   const Signin = async (id, name, phoneNumber, email, userName, password) => {
     let res = await signin(
@@ -111,54 +178,59 @@ const Signin = () => {
         <div className="signin-content row">
           <div className="col-12 text-signin">Signin</div>
           <div className="col-12 from-group signin-input">
-            <label>Name:</label>
+            <label>Name <b>*</b></label>
             <input
+              id="name-input"
               className="form-control"
               type="text"
               placeholder="Enter your name"
               value={name}
-              onChange={(event) => setName(event.target.value)}
+              onChange={(event) => HandleChangeName(event)}
             />
           </div>
           <div className="col-12 from-group signin-input">
-            <label>Phone number:</label>
+            <label>Phone number <b>*</b></label>
             <input
+              id="phone-input"
               className="form-control"
               type="text"
               placeholder="Enter your phone number"
               value={phone}
-              onChange={(event) => setPhone(event.target.value)}
+              onChange={(event) => HandleChangePhone(event)}
             />
           </div>
           <div className="col-12 from-group signin-input">
-            <label>Email:</label>
+            <label>Email <b>*</b></label>
             <input
+              id="email-input"
               className="form-control"
               type="text"
               placeholder="Enter your email"
               value={email}
-              onChange={(event) => setEmail(event.target.value)}
+              onChange={(event) => HandleChangeEmail(event)}
             />
           </div>
           <div className="col-12 from-group signin-input">
-            <label>Username:</label>
+            <label>Username <b>*</b></label>
             <input
+              id="username-input"
               className="form-control"
               type="text"
               placeholder="Enter your user name"
               value={username}
-              onChange={(event) => setUsername(event.target.value)}
+              onChange={(event) => HandleChangeUserName(event)}
             />
           </div>
           <div className="col-12 from-group signin-input">
-            <label>Password:</label>
+            <label>Password <b>*</b></label>
             <div className="custom-input">
               <input
+                id="pass-input"
                 type={show ? "text" : "password"}
                 className="form-control"
                 placeholder="Enter your password"
                 value={password}
-                onChange={(event) => setPassword(event.target.value)}
+                onChange={(event) => HandleChangePassWord(event)}
               />
               <span onClick={() => setShow(!show)}>
                 <i className={show ? "far fa-eye-slash" : "far fa-eye"}></i>
@@ -166,20 +238,22 @@ const Signin = () => {
             </div>
           </div>
           <div className="col-12 from-group signin-input">
-            <label>Confirm Password:</label>
+            <label>Confirm Password <b>*</b></label>
             <div className="custom-input">
               <input
+                id="confirm-pass-input"
                 type={show ? "text" : "password"}
                 className="form-control"
                 placeholder="Enter your confirm password"
                 value={confirmPassword}
-                onChange={(event) => setConfirmPassword(event.target.value)}
+                onChange={(event) => HandleChangeConfirmPassWord(event)}
               />
               <span onClick={() => setShow(!show)}>
                 <i className={show ? "far fa-eye-slash" : "far fa-eye"}></i>
               </span>
             </div>
           </div>
+          <label className="note">(<b>*</b>) Information is required to be entered</label>
           {showOtp ? (
             <div>
               <label>OTP:</label>
